@@ -24,7 +24,7 @@ export default function AccountCreationScreen() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    navigate('/permissions')
+    navigate('/app/permissions')
   }
 
   return (
