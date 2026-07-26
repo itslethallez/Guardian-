@@ -1,17 +1,17 @@
 import { createContext, useContext, useEffect, useState } from 'react'
-import type { Session, User, AuthError } from '@supabase/supabase-js'
-import { supabase } from '../lib/supabase'
+import type { Session, User } from '@supabase/supabase-js'
+import { isSupabaseConfigured, supabase, supabaseConfigError } from '../lib/supabase'
 
 interface AuthContextValue {
   session: Session | null
   user: User | null
   loading: boolean
-  signIn: (email: string, password: string) => Promise<{ error: AuthError | null }>
+  signIn: (email: string, password: string) => Promise<{ error: string | null }>
   signUp: (
     email: string,
     password: string,
     name: string
-  ) => Promise<{ error: AuthError | null; requiresEmailConfirmation: boolean }>
+  ) => Promise<{ error: string | null; requiresEmailConfirmation: boolean }>
   signOut: () => Promise<void>
 }
 
@@ -43,17 +43,28 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   const signIn = async (email: string, password: string) => {
+    if (!isSupabaseConfigured) {
+      return { error: supabaseConfigError ?? 'Supabase is not configured for browser auth.' }
+    }
+
     const { error } = await supabase.auth.signInWithPassword({ email, password })
-    return { error }
+    return { error: error?.message ?? null }
   }
 
   const signUp = async (email: string, password: string, name: string) => {
+    if (!isSupabaseConfigured) {
+      return {
+        error: supabaseConfigError ?? 'Supabase is not configured for browser auth.',
+        requiresEmailConfirmation: false,
+      }
+    }
+
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: { data: { name } },
     })
-    return { error, requiresEmailConfirmation: !data.session }
+    return { error: error?.message ?? null, requiresEmailConfirmation: !data.session }
   }
 
   const signOut = async () => {

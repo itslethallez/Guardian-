@@ -33,7 +33,7 @@ export default function SignUpPage() {
     setLoading(false)
 
     if (authError) {
-      setError(authError.message)
+      setError(authError)
       return
     }
 

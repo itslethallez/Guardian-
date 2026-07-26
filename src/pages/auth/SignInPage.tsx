@@ -27,7 +27,7 @@ export default function SignInPage() {
     setLoading(false)
 
     if (authError) {
-      setError(authError.message)
+      setError(authError)
       return
     }
 
