@@ -19,13 +19,35 @@ import SettingsScreen from './app/SettingsScreen'
 
 export default function AppPrototype() {
   const navigate = useNavigate()
-  const { user, addTrustedContact, addSafePhrase, updateEscalationPlan, updatePermissions } = useAppUser()
+  const {
+    user,
+    loading,
+    persistenceError,
+    addTrustedContact,
+    addSafePhrase,
+    updateEscalationPlan,
+    updatePermissions,
+  } = useAppUser()
   const { state, startSession, endSession, triggerAlert } = useGuardModeState()
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-dark flex items-center justify-center">
+        <div className="text-ivory/60 text-sm">Loading your profile…</div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-dark">
       {/* App container */}
       <div className="mx-auto max-w-md bg-dark-card min-h-screen relative">
+        {persistenceError && (
+          <div className="mx-4 mt-4 rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-200">
+            We could not sync your profile changes right now: {persistenceError}
+          </div>
+        )}
+
         {/* Back button */}
         <button
           onClick={() => navigate(-1)}
