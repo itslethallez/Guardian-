@@ -148,9 +148,9 @@ supabase/
 
 ## Development Notes
 
-### Mock Services
+### Data Persistence
 
-App-level data (trusted contacts, safe phrases, escalation plans) is still stored in local React state. The Supabase `profiles` table stores basic identity data (`name`, `phone`). Full persistence of app data to Supabase is a planned future enhancement.
+App-level profile state now persists to Supabase in `profiles.app_state` (trusted contacts, safe phrases, escalation plans, session history, permissions, and privacy settings). When a user signs in, the app restores this state and overlays it onto the default client profile.
 
 ### Browser Support
 

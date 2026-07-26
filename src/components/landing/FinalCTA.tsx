@@ -19,7 +19,7 @@ export default function FinalCTA() {
               Set up Guard Mode in minutes and protect yourself discreetly wherever you go.
             </p>
             <Link
-              to="/app/onboarding"
+              to="/auth/sign-up"
               className="inline-flex items-center gap-2 px-7 py-3 bg-gold text-dark font-semibold rounded-lg hover:bg-gold/90 transition-colors"
             >
               Start now <ArrowRight className="w-4 h-4" />
