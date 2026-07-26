@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { ArrowRight, MapPin, Mic, Shield } from 'lucide-react'
-import Logo from '../components/Logo'
+import Logo from '../Logo'
 
 const container = {
   hidden: { opacity: 0 },

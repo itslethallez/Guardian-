@@ -13,15 +13,22 @@ const durationOptions = [
   { label: '1 hour', value: 'one-hour', minutes: 60 },
   { label: '2 hours', value: 'two-hours', minutes: 120 },
   { label: 'Until I turn it off', value: 'manual', minutes: 0 },
-]
+] as const
 
 export default function StartGuardModeScreen({
   onStart,
 }: StartGuardModeScreenProps) {
   const navigate = useNavigate()
   const [step, setStep] = useState<'duration' | 'config' | 'review'>('duration')
-  const [config, setConfig] = useState({
-    duration: 'one-hour' as const,
+  const [config, setConfig] = useState<{
+    duration: 'thirty-min' | 'one-hour' | 'two-hours' | 'manual' | 'custom'
+    locationSharing: boolean
+    enableSafePhrases: boolean
+    checkInInterval: number
+    note: string
+    journeyDestination: string
+  }>({
+    duration: 'one-hour',
     locationSharing: true,
     enableSafePhrases: true,
     checkInInterval: 5,
@@ -81,7 +88,7 @@ export default function StartGuardModeScreen({
             {durationOptions.map((option) => (
               <button
                 key={option.value}
-                onClick={() => setConfig((prev) => ({ ...prev, duration: option.value as any }))}
+                onClick={() => setConfig((prev) => ({ ...prev, duration: option.value }))}
                 className={`w-full flex items-center gap-4 p-4 rounded-lg border-2 transition-all ${
                   config.duration === option.value
                     ? 'border-gold bg-gold/10'

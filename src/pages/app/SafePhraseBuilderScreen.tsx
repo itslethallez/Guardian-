@@ -15,9 +15,13 @@ export default function SafePhraseBuilderScreen({
 }: SafePhraseBuilderScreenProps) {
   const navigate = useNavigate()
   const [editingId, setEditingId] = useState<string | null>(null)
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    phrase: string
+    alertLevel: 'low' | 'medium' | 'urgent'
+    customMessage: string
+  }>({
     phrase: '',
-    alertLevel: 'medium' as const,
+    alertLevel: 'medium',
     customMessage: '',
   })
   const [testMode, setTestMode] = useState(false)
