@@ -69,7 +69,7 @@ export default function PermissionSetupScreen({
 
   const handleSubmit = () => {
     onUpdate(selectedPermissions)
-    navigate('/home')
+    navigate('/app/home')
   }
 
   return (
