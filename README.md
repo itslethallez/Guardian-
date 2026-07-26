@@ -156,7 +156,7 @@ App-level data (trusted contacts, safe phrases, escalation plans) is still store
 
 - Modern browsers (Chrome, Safari, Firefox, Edge)
 - Mobile browsers (iOS Safari, Chrome Mobile)
-- Responsive design optimised for 320 px – 1920 px
+- Responsive design optimized for 320 px – 1920 px
 
 ## License
 
