@@ -39,7 +39,7 @@ export default function OnboardingScreen() {
     if (currentSlide < slides.length - 1) {
       setCurrentSlide(currentSlide + 1)
     } else {
-      navigate('/account-creation')
+      navigate('/app/account-creation')
     }
   }
 
@@ -76,7 +76,7 @@ export default function OnboardingScreen() {
         {/* Buttons */}
         <div className="flex gap-3">
           <button
-            onClick={() => navigate('/account-creation')}
+            onClick={() => navigate('/app/account-creation')}
             className="flex-1 px-4 py-3 text-ivory/60 font-medium rounded-lg hover:text-ivory transition-colors"
           >
             Skip
