@@ -73,7 +73,7 @@ export default function Hero() {
               {/* CTAs */}
               <motion.div variants={item} className="flex flex-col sm:flex-row gap-4 pt-4">
                 <Link
-                  to="/app/onboarding"
+                  to="/auth/sign-up"
                   className="inline-flex items-center justify-center gap-2 px-8 py-3 bg-gold text-dark font-semibold rounded-lg hover:bg-gold/90 transition-colors"
                 >
                   Start Guard Mode

@@ -42,11 +42,11 @@ export default function Navigation() {
 
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center gap-4">
-            <a href="#signin" className="text-sm text-ivory/80 hover:text-gold transition-colors">
+            <Link to="/auth/sign-in" className="text-sm text-ivory/80 hover:text-gold transition-colors">
               Sign In
-            </a>
+            </Link>
             <Link
-              to="/app/onboarding"
+              to="/auth/sign-up"
               className="px-6 py-2 bg-gold text-dark font-medium rounded-lg hover:bg-gold/90 transition-colors"
             >
               Get Guard Mode
@@ -77,11 +77,15 @@ export default function Navigation() {
                 </a>
               ))}
               <div className="pt-4 border-t border-charcoal space-y-3">
-                <a href="#signin" className="block text-sm text-ivory/80 hover:text-gold transition-colors">
-                  Sign In
-                </a>
                 <Link
-                  to="/app/onboarding"
+                  to="/auth/sign-in"
+                  className="block text-sm text-ivory/80 hover:text-gold transition-colors"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Sign In
+                </Link>
+                <Link
+                  to="/auth/sign-up"
                   className="block px-4 py-2 bg-gold text-dark font-medium rounded-lg hover:bg-gold/90 transition-colors text-center"
                   onClick={() => setMobileMenuOpen(false)}
                 >

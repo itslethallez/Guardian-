@@ -29,11 +29,20 @@ export default function SignUpPage() {
     }
 
     setLoading(true)
-    const { error: authError } = await signUp(email, password, name)
+    const { error: authError, requiresEmailConfirmation } = await signUp(email, password, name)
     setLoading(false)
 
     if (authError) {
       setError(authError.message)
+      return
+    }
+
+    if (requiresEmailConfirmation) {
+      navigate('/auth/sign-in', {
+        state: {
+          message: 'Account created. Please verify your email, then sign in.',
+        },
+      })
       return
     }
 

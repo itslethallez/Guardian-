@@ -1,16 +1,21 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Mail, Lock, Shield } from 'lucide-react'
 import { useAuth } from '../../contexts/AuthContext'
 
 export default function SignInPage() {
   const navigate = useNavigate()
+  const location = useLocation()
   const { signIn } = useAuth()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+  const infoMessage =
+    typeof (location.state as { message?: unknown } | null)?.message === 'string'
+      ? ((location.state as { message?: string }).message ?? null)
+      : null
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -48,6 +53,12 @@ export default function SignInPage() {
         <p className="text-ivory/60 mb-8">Sign in to your account</p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          {infoMessage && (
+            <p className="text-teal text-sm bg-teal/10 border border-teal/30 rounded-lg px-4 py-3">
+              {infoMessage}
+            </p>
+          )}
+
           {/* Email */}
           <div>
             <label className="block text-sm font-medium text-ivory mb-2">Email</label>

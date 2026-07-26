@@ -1,5 +1,4 @@
-import { useState } from 'react'
-import { Routes, Route, useNavigate } from 'react-router-dom'
+import { Navigate, Routes, Route, useNavigate } from 'react-router-dom'
 import { ArrowLeft } from 'lucide-react'
 import { useAppUser } from '../hooks/useAppUser'
 import { useGuardModeState } from '../hooks/useGuardModeState'
@@ -16,6 +15,7 @@ import IncomingAlertScreen from './app/IncomingAlertScreen'
 import JourneyModeScreen from './app/JourneyModeScreen'
 import SessionHistoryScreen from './app/SessionHistoryScreen'
 import SettingsScreen from './app/SettingsScreen'
+import SettingsDetailScreen from './app/SettingsDetailScreen'
 
 export default function AppPrototype() {
   const navigate = useNavigate()
@@ -71,6 +71,34 @@ export default function AppPrototype() {
           <Route path="/journey-mode" element={<JourneyModeScreen />} />
           <Route path="/history" element={<SessionHistoryScreen />} />
           <Route path="/settings" element={<SettingsScreen user={user} />} />
+          <Route
+            path="/settings/notifications"
+            element={
+              <SettingsDetailScreen
+                title="Notifications"
+                description="Manage how and when Guard Mode alerts and check-ins notify you."
+              />
+            }
+          />
+          <Route
+            path="/settings/security"
+            element={
+              <SettingsDetailScreen
+                title="Security"
+                description="Review account protection and sign-in safety settings."
+              />
+            }
+          />
+          <Route
+            path="/settings/privacy"
+            element={
+              <SettingsDetailScreen
+                title="Privacy Controls"
+                description="Control retention, visibility, and data-sharing behavior for Guard Mode."
+              />
+            }
+          />
+          <Route path="*" element={<Navigate to="/app/home" replace />} />
         </Routes>
       </div>
     </div>
