@@ -18,6 +18,7 @@ A premium, mobile-first personal safety app that allows users to activate discre
 - **Animation**: Framer Motion
 - **Routing**: React Router v6
 - **Icons**: Lucide React
+- **Auth + Database**: Supabase (Auth + Postgres)
 
 ## Getting Started
 
@@ -25,8 +26,33 @@ A premium, mobile-first personal safety app that allows users to activate discre
 
 - Node.js 16+
 - npm or yarn
+- A free [Supabase](https://supabase.com) account
 
-### Installation
+### 1. Create a Supabase project
+
+1. Go to [supabase.com](https://supabase.com) and create a new project.
+2. Once created, navigate to **Settings → API** and copy your:
+   - **Project URL** (`VITE_SUPABASE_URL`)
+   - **anon / public** key (`VITE_SUPABASE_ANON_KEY`)
+
+### 2. Apply the database schema
+
+Open the **Supabase SQL Editor** (Database → SQL Editor in your project dashboard) and run the contents of:
+
+```
+supabase/migrations/001_profiles.sql
+```
+
+This creates the `profiles` table, RLS policies, and the trigger that auto-creates a profile row on sign-up.
+
+### 3. Configure environment variables
+
+```bash
+cp .env.example .env.local
+# Then edit .env.local and fill in your Supabase URL and anon key
+```
+
+### 4. Install and run
 
 ```bash
 # Install dependencies
@@ -35,12 +61,48 @@ npm install
 # Start development server
 npm run dev
 
+# Type-check
+npm run type-check
+
 # Build for production
 npm run build
 
 # Preview production build
 npm run preview
 ```
+
+## Authentication
+
+### How it works
+
+- **Sign up** at `/auth/sign-up` — creates a Supabase auth account and a matching `profiles` row.
+- **Sign in** at `/auth/sign-in` — authenticates and persists the session in `localStorage` automatically (handled by the Supabase client).
+- **Session restore** — on app reload the Supabase client restores the session from storage; the `AuthContext` picks this up and keeps React state in sync.
+- **Sign out** — available from Settings → Sign Out; clears the persisted session.
+- **Route protection** — all `/app/*` routes require an active session. Unauthenticated users are redirected to `/auth/sign-in`.
+
+### Auth routes (public)
+
+| Path | Description |
+|---|---|
+| `/auth/sign-in` | Email + password sign in |
+| `/auth/sign-up` | Create a new account |
+
+### App routes (protected — require sign-in)
+
+| Path | Description |
+|---|---|
+| `/app/onboarding` | Onboarding slides |
+| `/app/home` | Main dashboard |
+| `/app/start-guard-mode` | Configure and start Guard Mode |
+| `/app/guard-mode-active` | Active session screen |
+| `/app/safe-phrases` | SafePhrase builder |
+| `/app/trusted-circle` | Manage trusted contacts |
+| `/app/escalation` | Build escalation plans |
+| `/app/incoming-alert` | Receive alerts from contacts |
+| `/app/journey-mode` | Set travel expectations |
+| `/app/history` | View past sessions |
+| `/app/settings` | Account and privacy settings |
 
 ## Project Structure
 
@@ -49,76 +111,38 @@ src/
 ├── components/
 │   ├── landing/          # Landing page sections
 │   ├── Navigation.tsx
-│   └── Logo.tsx
+│   ├── Logo.tsx
+│   └── ProtectedRoute.tsx  # Auth gate for /app/* routes
+├── contexts/
+│   └── AuthContext.tsx   # Supabase auth state + session restore
+├── lib/
+│   └── supabase.ts       # Supabase client (reads Vite env vars)
 ├── pages/
 │   ├── LandingPage.tsx
 │   ├── AppPrototype.tsx
+│   ├── auth/
+│   │   ├── SignInPage.tsx
+│   │   └── SignUpPage.tsx
 │   └── app/              # Individual app screens
 ├── hooks/
 │   ├── useGuardModeState.ts
-│   └── useAppUser.ts
+│   └── useAppUser.ts     # App user state (overlays auth user info)
 ├── services/
-│   └── mockData.ts       # Mock user and alert data
+│   └── mockData.ts       # Default/mock user and alert data
 ├── types/
 │   └── index.ts          # TypeScript type definitions
 ├── App.tsx
 ├── main.tsx
 └── index.css
+supabase/
+└── migrations/
+    └── 001_profiles.sql  # profiles table + RLS policies
+.env.example              # Required environment variables
 ```
-
-## App Routes
-
-### Marketing
-- `/` - Landing page with hero, features, and CTAs
-
-### App Prototype
-- `/app/onboarding` - Onboarding slides
-- `/app/account-creation` - Account setup
-- `/app/permissions` - Permission requests
-- `/app/home` - Main dashboard
-- `/app/start-guard-mode` - Configure and start Guard Mode
-- `/app/guard-mode-active` - Active session screen
-- `/app/safe-phrases` - SafePhrase builder
-- `/app/trusted-circle` - Manage trusted contacts
-- `/app/escalation` - Build escalation plans
-- `/app/incoming-alert` - Receive alerts from contacts
-- `/app/journey-mode` - Set travel expectations
-- `/app/history` - View past sessions
-- `/app/settings` - Account and privacy settings
-
-## Key Features
-
-### Interactive Prototype
-
-The prototype is fully functional with:
-- State management for Guard Mode sessions
-- SafePhrase creation and management
-- Trusted contact management
-- Real-time session timers
-- Alert demonstrations
-- Session history tracking
-
-### Design System
-
-**Colors**
-- Dark: `#0a0e27`
-- Charcoal: `#1a2139`
-- Ivory: `#f5f3f0`
-- Gold: `#d4af91`
-- Teal: `#3fb8a0`
-- Amber: `#d99d3f`
-
-**Premium Features**
-- Smooth animations and transitions
-- Glassmorphism effects
-- Soft shadows and rounded corners
-- Responsive mobile-first design
-- Accessibility-first approach
 
 ## Important Disclaimers
 
 - Guard Mode does not directly contact emergency services
-- This is a demonstration prototype
 - Voice recognition, location sharing, and background operation may vary by device and location
 - Not a replacement for emergency services (911, etc.)
 
@@ -126,18 +150,13 @@ The prototype is fully functional with:
 
 ### Mock Services
 
-All data is currently stored in local state using React hooks. For production, integrate:
-- Supabase or Firebase for authentication
-- Real location services (Google Maps API)
-- Push notifications service
-- Voice recognition API
-- Real emergency service integrations (with proper legal compliance)
+App-level data (trusted contacts, safe phrases, escalation plans) is still stored in local React state. The Supabase `profiles` table stores basic identity data (`name`, `phone`). Full persistence of app data to Supabase is a planned future enhancement.
 
 ### Browser Support
 
 - Modern browsers (Chrome, Safari, Firefox, Edge)
 - Mobile browsers (iOS Safari, Chrome Mobile)
-- Responsive design optimized for 320px - 1920px
+- Responsive design optimised for 320 px – 1920 px
 
 ## License
 

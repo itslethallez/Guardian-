@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Lock, LogOut, Trash2, Bell, Shield, Database, ChevronRight } from 'lucide-react'
 import { AppUser } from '../../types'
+import { useAuth } from '../../contexts/AuthContext'
 
 interface SettingsScreenProps {
   user: AppUser
@@ -49,7 +50,13 @@ const settingsSections = [
 
 export default function SettingsScreen({ user }: SettingsScreenProps) {
   const navigate = useNavigate()
+  const { signOut } = useAuth()
   const [showDeleteWarning, setShowDeleteWarning] = useState(false)
+
+  const handleSignOut = async () => {
+    await signOut()
+    navigate('/auth/sign-in')
+  }
 
   return (
     <motion.div
@@ -107,7 +114,9 @@ export default function SettingsScreen({ user }: SettingsScreenProps) {
       {/* Danger Zone */}
       <div className="space-y-3">
         <h2 className="text-lg font-semibold text-ivory mb-4">Advanced</h2>
-        <button className="w-full flex items-center gap-3 p-4 bg-dark-card border border-charcoal rounded-lg hover:border-gold/30 transition-colors">
+        <button
+          onClick={handleSignOut}
+          className="w-full flex items-center gap-3 p-4 bg-dark-card border border-charcoal rounded-lg hover:border-gold/30 transition-colors">
           <LogOut className="w-5 h-5 text-gold" />
           <div className="text-left flex-1">
             <p className="font-medium text-ivory">Sign Out</p>
