@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { ChevronRight, Plus, Trash2, Play } from 'lucide-react'
@@ -14,6 +14,7 @@ export default function SafePhraseBuilderScreen({
   onAdd,
 }: SafePhraseBuilderScreenProps) {
   const navigate = useNavigate()
+  const timersRef = useRef<number[]>([])
   const [formData, setFormData] = useState<{
     phrase: string
     alertLevel: 'low' | 'medium' | 'urgent'
@@ -24,9 +25,12 @@ export default function SafePhraseBuilderScreen({
     customMessage: '',
   })
   const [testMode, setTestMode] = useState(false)
-  const [testResult, setTestResult] = useState<{
+  const [simulation, setSimulation] = useState<{
     phrase: SafePhrase
-    detectedAt: Date
+    detectedAt: Date | null
+    step: 'idle' | 'queued' | 'listening' | 'matched' | 'acknowledged' | 'complete'
+    transcript: string
+    log: string[]
   } | null>(null)
 
   const handleAdd = () => {
@@ -48,17 +52,62 @@ export default function SafePhraseBuilderScreen({
   }
 
   const handleStartTestMode = () => {
-    setTestMode((prev) => !prev)
-    setTestResult(null)
+    setTestMode((prev) => {
+      if (prev) {
+        timersRef.current.forEach((timer) => window.clearTimeout(timer))
+        timersRef.current = []
+      }
+      return !prev
+    })
+    setSimulation(null)
   }
 
   const handleTestPhrase = (phrase: SafePhrase) => {
+    timersRef.current.forEach((timer) => window.clearTimeout(timer))
+    timersRef.current = []
+
     setTestMode(true)
-    setTestResult({
+    setSimulation({
       phrase,
-      detectedAt: new Date(),
+      detectedAt: null,
+      step: 'queued',
+      transcript: phrase.phrase,
+      log: ['Sentence pushed to test queue'],
     })
+
+    const pushStep = (
+      delay: number,
+      nextStep: 'queued' | 'listening' | 'matched' | 'acknowledged' | 'complete',
+      message: string,
+      detectedAt?: boolean
+    ) => {
+      const timer = window.setTimeout(() => {
+        setSimulation((current) =>
+          current
+            ? {
+                ...current,
+                step: nextStep,
+                detectedAt: detectedAt ? new Date() : current.detectedAt,
+                log: [...current.log, message],
+              }
+            : current
+        )
+      }, delay)
+
+      timersRef.current.push(timer)
+    }
+
+    pushStep(700, 'listening', 'Guard Mode is listening for the phrase...');
+    pushStep(1500, 'matched', `Speech matched: "${phrase.phrase}"`, true)
+    pushStep(2300, 'acknowledged', 'Trigger queued locally - no real alert sent')
+    pushStep(3200, 'complete', 'Simulation complete')
   }
+
+  useEffect(() => {
+    return () => {
+      timersRef.current.forEach((timer) => window.clearTimeout(timer))
+    }
+  }, [])
 
   return (
     <motion.div
@@ -217,21 +266,39 @@ export default function SafePhraseBuilderScreen({
                 </p>
               </div>
 
-              {testResult ? (
+              {simulation ? (
                 <motion.div
                   initial={{ opacity: 0, y: 6 }}
                   animate={{ opacity: 1, y: 0 }}
                   className="rounded-lg border border-gold/20 bg-dark-card p-4"
                 >
-                  <p className="text-sm text-ivory font-semibold mb-1">Last test result</p>
-                  <p className="text-sm text-ivory/80">
-                    Detected phrase: "{testResult.phrase.phrase}"
-                  </p>
-                  <p className="text-xs text-ivory/60 mt-1">
-                    Alert level: {testResult.phrase.alertLevel} | {testResult.detectedAt.toLocaleTimeString()}
-                  </p>
+                  <div className="flex items-center justify-between gap-3 mb-3">
+                    <p className="text-sm text-ivory font-semibold">Live simulation</p>
+                    <span className="text-xs px-2 py-1 rounded-full bg-teal/10 text-teal border border-teal/20">
+                      {simulation.step}
+                    </span>
+                  </div>
+                  <div className="space-y-2 text-sm">
+                    <p className="text-ivory/80">
+                      Detected phrase: "{simulation.phrase.phrase}"
+                    </p>
+                    <p className="text-ivory/70">Transcript: {simulation.transcript}</p>
+                    <p className="text-ivory/70">Alert level: {simulation.phrase.alertLevel}</p>
+                    {simulation.detectedAt && (
+                      <p className="text-xs text-ivory/50">
+                        Detected at {simulation.detectedAt.toLocaleTimeString()}
+                      </p>
+                    )}
+                  </div>
+                  <div className="mt-4 space-y-2">
+                    {simulation.log.map((entry) => (
+                      <div key={entry} className="rounded-lg border border-charcoal bg-charcoal/50 px-3 py-2 text-xs text-ivory/75">
+                        {entry}
+                      </div>
+                    ))}
+                  </div>
                   <p className="text-xs text-teal mt-3">
-                    No alert was sent. This was only a local simulation.
+                    This is a local-only simulation. No alert was sent.
                   </p>
                 </motion.div>
               ) : (
