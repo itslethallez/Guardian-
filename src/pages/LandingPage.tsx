@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import Navigation from '../components/Navigation'
 import Hero from '../components/landing/Hero'
 import TrustStrip from '../components/landing/TrustStrip'
+import ValueStrip from '../components/landing/ValueStrip'
 import HowItWorks from '../components/landing/HowItWorks'
 import SafePhraseDemo from '../components/landing/SafePhraseDemo'
 import GuardModeSection from '../components/landing/GuardModeSection'
@@ -25,13 +26,14 @@ export default function LandingPage() {
       <main className="bg-dark text-ivory">
         <Hero />
         <TrustStrip />
+        <ValueStrip />
         <HowItWorks />
+        <UseCases />
         <SafePhraseDemo />
         <GuardModeSection />
         <TrustedCircleSection />
         <JourneyModeSection />
         <PrivacySection />
-        <UseCases />
         <FinalCTA />
       </main>
     </>
