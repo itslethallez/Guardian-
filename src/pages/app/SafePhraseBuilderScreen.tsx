@@ -14,7 +14,6 @@ export default function SafePhraseBuilderScreen({
   onAdd,
 }: SafePhraseBuilderScreenProps) {
   const navigate = useNavigate()
-  const [editingId, setEditingId] = useState<string | null>(null)
   const [formData, setFormData] = useState<{
     phrase: string
     alertLevel: 'low' | 'medium' | 'urgent'
@@ -25,6 +24,10 @@ export default function SafePhraseBuilderScreen({
     customMessage: '',
   })
   const [testMode, setTestMode] = useState(false)
+  const [testResult, setTestResult] = useState<{
+    phrase: SafePhrase
+    detectedAt: Date
+  } | null>(null)
 
   const handleAdd = () => {
     if (!formData.phrase.trim()) return
@@ -42,6 +45,19 @@ export default function SafePhraseBuilderScreen({
 
     onAdd(newPhrase)
     setFormData({ phrase: '', alertLevel: 'medium', customMessage: '' })
+  }
+
+  const handleStartTestMode = () => {
+    setTestMode((prev) => !prev)
+    setTestResult(null)
+  }
+
+  const handleTestPhrase = (phrase: SafePhrase) => {
+    setTestMode(true)
+    setTestResult({
+      phrase,
+      detectedAt: new Date(),
+    })
   }
 
   return (
@@ -89,7 +105,11 @@ export default function SafePhraseBuilderScreen({
                   </span>
                 </div>
                 <p className="text-xs text-ivory/60 mb-3">{phrase.customMessage || 'No message set'}</p>
-                <button className="flex items-center gap-2 text-xs text-gold hover:text-gold/80 transition-colors">
+                <button
+                  type="button"
+                  onClick={() => handleTestPhrase(phrase)}
+                  className="flex items-center gap-2 text-xs text-gold hover:text-gold/80 transition-colors"
+                >
                   <Play size={12} /> Test Phrase
                 </button>
               </motion.div>
@@ -167,10 +187,68 @@ export default function SafePhraseBuilderScreen({
       {/* Test Mode */}
       {user.safePhrases.length > 0 && (
         <div className="bg-dark-card border border-charcoal rounded-lg p-6">
-          <h2 className="text-lg font-semibold text-ivory mb-4">Test Phrases (No Alert Sent)</h2>
-          <button className="w-full px-4 py-3 border border-gold text-gold font-semibold rounded-lg hover:bg-gold/10 transition-colors flex items-center justify-center gap-2">
-            <Play size={18} /> Start Test Mode
-          </button>
+          <div className="flex items-center justify-between gap-3 mb-4">
+            <div>
+              <h2 className="text-lg font-semibold text-ivory">Test Phrases (No Alert Sent)</h2>
+              <p className="text-xs text-ivory/60 mt-1">
+                Simulate detection locally to verify your SafePhrases before you need them.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={handleStartTestMode}
+              className={`px-4 py-2 rounded-lg font-semibold transition-colors flex items-center justify-center gap-2 ${
+                testMode
+                  ? 'bg-teal text-dark hover:bg-teal-light'
+                  : 'border border-gold text-gold hover:bg-gold/10'
+              }`}
+            >
+              <Play size={16} />
+              {testMode ? 'Stop Test Mode' : 'Start Test Mode'}
+            </button>
+          </div>
+
+          {testMode ? (
+            <div className="space-y-3">
+              <div className="rounded-lg border border-teal/30 bg-teal/10 p-4">
+                <p className="text-sm text-teal font-semibold">Test mode is active</p>
+                <p className="text-xs text-teal/80 mt-1">
+                  Tap any phrase above to simulate detection without sending a real alert.
+                </p>
+              </div>
+
+              {testResult ? (
+                <motion.div
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="rounded-lg border border-gold/20 bg-dark-card p-4"
+                >
+                  <p className="text-sm text-ivory font-semibold mb-1">Last test result</p>
+                  <p className="text-sm text-ivory/80">
+                    Detected phrase: "{testResult.phrase.phrase}"
+                  </p>
+                  <p className="text-xs text-ivory/60 mt-1">
+                    Alert level: {testResult.phrase.alertLevel} | {testResult.detectedAt.toLocaleTimeString()}
+                  </p>
+                  <p className="text-xs text-teal mt-3">
+                    No alert was sent. This was only a local simulation.
+                  </p>
+                </motion.div>
+              ) : (
+                <div className="rounded-lg border border-charcoal bg-charcoal/40 p-4">
+                  <p className="text-sm text-ivory/80">
+                    No phrase has been tested yet. Choose a SafePhrase above to run the simulation.
+                  </p>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="rounded-lg border border-charcoal bg-charcoal/40 p-4">
+              <p className="text-sm text-ivory/80">
+                Turn on test mode to verify phrase detection without sending any alert.
+              </p>
+            </div>
+          )}
         </div>
       )}
     </motion.div>
