@@ -4,6 +4,15 @@ import { motion } from 'framer-motion'
 import { ChevronRight, Plus, Mail, Phone, Users, CheckCircle, X } from 'lucide-react'
 import { TrustedContact, AppUser } from '../../types'
 
+const countries = [
+  { code: 'AU', name: 'Australia', dialCode: '+61', example: '412 345 678' },
+  { code: 'US', name: 'United States', dialCode: '+1', example: '(555) 987-6543' },
+  { code: 'GB', name: 'United Kingdom', dialCode: '+44', example: '7700 900123' },
+  { code: 'NZ', name: 'New Zealand', dialCode: '+64', example: '21 123 4567' },
+] as const
+
+type CountryCode = (typeof countries)[number]['code']
+
 interface TrustedCircleScreenProps {
   user: AppUser
   onAdd: (contact: TrustedContact) => void
@@ -17,17 +26,24 @@ export default function TrustedCircleScreen({
   const [showForm, setShowForm] = useState(false)
   const [formData, setFormData] = useState({
     name: '',
+    country: 'AU' as CountryCode,
     phoneNumber: '',
     email: '',
   })
+  const selectedCountry =
+    countries.find((country) => country.code === formData.country) ?? countries[0]
 
   const handleAdd = () => {
     if (!formData.name.trim() || !formData.phoneNumber.trim()) return
+    const trimmedPhone = formData.phoneNumber.trim()
+    const normalizedPhone = trimmedPhone.startsWith('+')
+      ? trimmedPhone
+      : `${selectedCountry.dialCode} ${trimmedPhone}`
 
     const newContact: TrustedContact = {
       id: `contact-${Date.now()}`,
       name: formData.name,
-      phoneNumber: formData.phoneNumber,
+      phoneNumber: normalizedPhone,
       email: formData.email,
       priority: 'high',
       status: 'pending',
@@ -35,7 +51,7 @@ export default function TrustedCircleScreen({
     }
 
     onAdd(newContact)
-    setFormData({ name: '', phoneNumber: '', email: '' })
+    setFormData({ name: '', country: formData.country, phoneNumber: '', email: '' })
     setShowForm(false)
   }
 
@@ -135,13 +151,33 @@ export default function TrustedCircleScreen({
             {/* Phone */}
             <div>
               <label className="block text-sm font-medium text-ivory mb-2">Phone Number</label>
-              <input
-                type="tel"
-                value={formData.phoneNumber}
-                onChange={(e) => setFormData((prev) => ({ ...prev, phoneNumber: e.target.value }))}
-                placeholder="+1 (555) 987-6543"
-                className="w-full px-4 py-3 bg-charcoal border border-charcoal/50 rounded-lg text-ivory placeholder-ivory/40 focus:outline-none focus:border-gold"
-              />
+              <div className="grid grid-cols-[150px_1fr] gap-3">
+                <select
+                  value={formData.country}
+                  onChange={(e) =>
+                    setFormData((prev) => ({ ...prev, country: e.target.value as CountryCode }))
+                  }
+                  className="px-3 py-3 bg-charcoal border border-charcoal/50 rounded-lg text-ivory focus:outline-none focus:border-gold"
+                >
+                  {countries.map((country) => (
+                    <option key={country.code} value={country.code}>
+                      {country.name} ({country.dialCode})
+                    </option>
+                  ))}
+                </select>
+                <div className="relative">
+                  <div className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-gold font-semibold">
+                    {selectedCountry.dialCode}
+                  </div>
+                  <input
+                    type="tel"
+                    value={formData.phoneNumber}
+                    onChange={(e) => setFormData((prev) => ({ ...prev, phoneNumber: e.target.value }))}
+                    placeholder={selectedCountry.example}
+                    className="w-full pl-16 pr-4 py-3 bg-charcoal border border-charcoal/50 rounded-lg text-ivory placeholder-ivory/40 focus:outline-none focus:border-gold"
+                  />
+                </div>
+              </div>
             </div>
 
             {/* Email */}

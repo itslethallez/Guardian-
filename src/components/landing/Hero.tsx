@@ -92,6 +92,12 @@ export default function Hero() {
                 >
                   See How It Works
                 </a>
+                <Link
+                  to="/simulation"
+                  className="inline-flex items-center justify-center gap-2 px-8 py-3 border border-charcoal text-ivory/80 font-semibold rounded-lg hover:bg-charcoal/40 transition-colors"
+                >
+                  Open simulation
+                </Link>
               </motion.div>
 
               <motion.div variants={item} className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
