@@ -16,6 +16,7 @@ export default function Navigation() {
     { label: 'Trusted Circle', href: '#trusted-circle' },
     { label: 'Journey Mode', href: '#journey-mode' },
     { label: 'Privacy', href: '#privacy' },
+    { label: 'Simulation', href: '/simulation' },
   ]
 
   return (
@@ -30,13 +31,19 @@ export default function Navigation() {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
             {navItems.map((item) => (
-              <a
-                key={item.label}
-                href={item.href}
-                className="text-sm text-ivory/80 hover:text-gold transition-colors"
-              >
-                {item.label}
-              </a>
+              item.href.startsWith('/') ? (
+                <Link key={item.label} to={item.href} className="text-sm text-ivory/80 hover:text-gold transition-colors">
+                  {item.label}
+                </Link>
+              ) : (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  className="text-sm text-ivory/80 hover:text-gold transition-colors"
+                >
+                  {item.label}
+                </a>
+              )
             ))}
           </div>
 
@@ -67,14 +74,25 @@ export default function Navigation() {
           <div className="md:hidden border-t border-charcoal bg-dark-card">
             <div className="px-4 py-4 space-y-4">
               {navItems.map((item) => (
-                <a
-                  key={item.label}
-                  href={item.href}
-                  className="block text-sm text-ivory/80 hover:text-gold transition-colors"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  {item.label}
-                </a>
+                item.href.startsWith('/') ? (
+                  <Link
+                    key={item.label}
+                    to={item.href}
+                    className="block text-sm text-ivory/80 hover:text-gold transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    {item.label}
+                  </Link>
+                ) : (
+                  <a
+                    key={item.label}
+                    href={item.href}
+                    className="block text-sm text-ivory/80 hover:text-gold transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    {item.label}
+                  </a>
+                )
               ))}
               <div className="pt-4 border-t border-charcoal space-y-3">
                 <Link
