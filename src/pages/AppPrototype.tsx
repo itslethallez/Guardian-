@@ -24,6 +24,7 @@ export default function AppPrototype() {
     loading,
     persistenceError,
     addTrustedContact,
+    updateTrustedContact,
     addSafePhrase,
     updateEscalationPlan,
     updatePermissions,
@@ -65,7 +66,10 @@ export default function AppPrototype() {
           <Route path="/start-guard-mode" element={<StartGuardModeScreen onStart={startSession} />} />
           <Route path="/guard-mode-active" element={<GuardModeActiveScreen session={state.currentSession} onEnd={endSession} />} />
           <Route path="/safe-phrases" element={<SafePhraseBuilderScreen user={user} onAdd={addSafePhrase} />} />
-          <Route path="/trusted-circle" element={<TrustedCircleScreen user={user} onAdd={addTrustedContact} />} />
+          <Route
+            path="/trusted-circle"
+            element={<TrustedCircleScreen user={user} onAdd={addTrustedContact} onUpdateContact={updateTrustedContact} />}
+          />
           <Route path="/escalation" element={<EscalationBuilderScreen onUpdate={updateEscalationPlan} />} />
           <Route path="/incoming-alert" element={<IncomingAlertScreen onTrigger={triggerAlert} />} />
           <Route path="/journey-mode" element={<JourneyModeScreen />} />

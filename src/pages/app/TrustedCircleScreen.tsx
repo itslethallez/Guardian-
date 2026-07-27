@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { ChevronRight, Plus, Mail, Phone, Users, CheckCircle, X } from 'lucide-react'
+import { Plus, Phone, X } from 'lucide-react'
 import { TrustedContact, AppUser } from '../../types'
 
 const countries = [
@@ -16,14 +16,18 @@ type CountryCode = (typeof countries)[number]['code']
 interface TrustedCircleScreenProps {
   user: AppUser
   onAdd: (contact: TrustedContact) => void
+  onUpdateContact: (contactId: string, updates: Partial<TrustedContact>) => void
 }
 
 export default function TrustedCircleScreen({
   user,
   onAdd,
+  onUpdateContact,
 }: TrustedCircleScreenProps) {
   const navigate = useNavigate()
   const [showForm, setShowForm] = useState(false)
+  const [confirmationInputs, setConfirmationInputs] = useState<Record<string, string>>({})
+  const [confirmationErrors, setConfirmationErrors] = useState<Record<string, string>>({})
   const [formData, setFormData] = useState({
     name: '',
     country: 'AU' as CountryCode,
@@ -45,6 +49,9 @@ export default function TrustedCircleScreen({
       name: formData.name,
       phoneNumber: normalizedPhone,
       email: formData.email,
+      inviteChannel: formData.email.trim() ? 'email' : 'sms',
+      invitedAt: new Date().toISOString(),
+      confirmationCode: `${Math.floor(100000 + Math.random() * 900000)}`,
       priority: 'high',
       status: 'pending',
       receivesAlerts: { low: true, medium: true, urgent: true },
@@ -61,6 +68,35 @@ export default function TrustedCircleScreen({
     disabled: 'bg-charcoal text-ivory/60',
     unavailable: 'bg-red-500/20 text-red-500',
     'sms-only': 'bg-teal/10 text-teal/80',
+  }
+
+  const confirmContact = (contact: TrustedContact) => {
+    const enteredCode = (confirmationInputs[contact.id] ?? '').trim()
+    if (!enteredCode || enteredCode !== contact.confirmationCode) {
+      setConfirmationErrors((prev) => ({
+        ...prev,
+        [contact.id]: 'Confirmation code does not match.',
+      }))
+      return
+    }
+
+    onUpdateContact(contact.id, {
+      status: 'connected',
+      acceptedAt: new Date().toISOString(),
+      confirmationCode: undefined,
+    })
+
+    setConfirmationErrors((prev) => ({ ...prev, [contact.id]: '' }))
+    setConfirmationInputs((prev) => ({ ...prev, [contact.id]: '' }))
+  }
+
+  const resendInvite = (contact: TrustedContact) => {
+    onUpdateContact(contact.id, {
+      invitedAt: new Date().toISOString(),
+      confirmationCode: `${Math.floor(100000 + Math.random() * 900000)}`,
+    })
+    setConfirmationErrors((prev) => ({ ...prev, [contact.id]: '' }))
+    setConfirmationInputs((prev) => ({ ...prev, [contact.id]: '' }))
   }
 
   return (
@@ -105,6 +141,50 @@ export default function TrustedCircleScreen({
                   {contact.receivesAlerts.medium && <span>Medium •</span>}
                   {contact.receivesAlerts.urgent && <span>Urgent</span>}
                 </div>
+                {contact.status === 'pending' && (
+                  <div className="mt-4 rounded-lg border border-amber/30 bg-amber/10 p-3 space-y-3">
+                    <p className="text-xs text-amber/90">
+                      Invite sent via {contact.inviteChannel === 'email' ? 'email' : 'SMS'}.
+                      Confirm acceptance before this contact becomes connected.
+                    </p>
+                    <p className="text-xs text-amber/80">
+                      Demo confirmation code: <span className="font-semibold">{contact.confirmationCode ?? 'N/A'}</span>
+                    </p>
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={confirmationInputs[contact.id] ?? ''}
+                        onChange={(e) =>
+                          setConfirmationInputs((prev) => ({ ...prev, [contact.id]: e.target.value }))
+                        }
+                        placeholder="Enter acceptance code"
+                        className="flex-1 px-3 py-2 bg-charcoal border border-charcoal/50 rounded-lg text-ivory placeholder-ivory/40 focus:outline-none focus:border-gold text-xs"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => confirmContact(contact)}
+                        className="px-3 py-2 bg-teal text-dark rounded-lg text-xs font-semibold hover:bg-teal-light transition-colors"
+                      >
+                        Confirm
+                      </button>
+                    </div>
+                    {confirmationErrors[contact.id] && (
+                      <p className="text-xs text-red-300">{confirmationErrors[contact.id]}</p>
+                    )}
+                    <button
+                      type="button"
+                      onClick={() => resendInvite(contact)}
+                      className="text-xs text-gold hover:text-gold/80 transition-colors"
+                    >
+                      Resend invite
+                    </button>
+                  </div>
+                )}
+                {contact.status === 'connected' && contact.acceptedAt && (
+                  <p className="mt-3 text-xs text-teal/80">
+                    Accepted {new Date(contact.acceptedAt).toLocaleString()}
+                  </p>
+                )}
               </motion.div>
             ))}
           </div>

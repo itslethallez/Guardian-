@@ -3,6 +3,10 @@ export interface TrustedContact {
   name: string
   phoneNumber: string
   email?: string
+  inviteChannel?: 'sms' | 'email'
+  invitedAt?: string
+  acceptedAt?: string
+  confirmationCode?: string
   priority: 'high' | 'medium' | 'low'
   status: 'connected' | 'pending' | 'disabled' | 'unavailable' | 'sms-only'
   receivesAlerts: {

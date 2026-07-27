@@ -19,6 +19,10 @@ type ProfileRow = {
   app_state: Partial<PersistedAppState> | null
 }
 
+const legacyDemoContactIds = new Set(['contact-001', 'contact-002', 'contact-003'])
+const legacyDemoPhraseIds = new Set(['phrase-001', 'phrase-002', 'phrase-003'])
+const legacyDemoEscalationIds = new Set(['step-001', 'step-002', 'step-003'])
+
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null
 }
@@ -37,6 +41,34 @@ function parsePersistedAppState(value: unknown): Partial<PersistedAppState> {
     privacySettings: isRecord(value.privacySettings)
       ? (value.privacySettings as AppUser['privacySettings'])
       : undefined,
+  }
+}
+
+function removeLegacySeedData(state: Partial<PersistedAppState>): Partial<PersistedAppState> {
+  const filteredContacts = state.trustedContacts?.filter(
+    (contact) => !legacyDemoContactIds.has(contact.id)
+  )
+
+  const filteredPhrases = state.safePhrases
+    ?.filter((phrase) => !legacyDemoPhraseIds.has(phrase.id))
+    .map((phrase) => ({
+      ...phrase,
+      recipients: filteredContacts
+        ? phrase.recipients.filter((recipientId) =>
+            filteredContacts.some((contact) => contact.id === recipientId)
+          )
+        : phrase.recipients,
+    }))
+
+  const filteredEscalationPlan = state.escalationPlan?.filter(
+    (step) => !legacyDemoEscalationIds.has(step.id)
+  )
+
+  return {
+    ...state,
+    trustedContacts: filteredContacts,
+    safePhrases: filteredPhrases,
+    escalationPlan: filteredEscalationPlan,
   }
 }
 
@@ -128,7 +160,7 @@ export function useAppUser() {
         return
       }
 
-      const persisted = parsePersistedAppState(data?.app_state)
+      const persisted = removeLegacySeedData(parsePersistedAppState(data?.app_state))
       const metadataName = authUser.user_metadata?.name
       const resolvedName = typeof metadataName === 'string' && metadataName.trim().length > 0
         ? metadataName
@@ -169,6 +201,15 @@ export function useAppUser() {
     }))
   }, [applyUserUpdate])
 
+  const updateTrustedContact = useCallback((contactId: string, updates: Partial<TrustedContact>) => {
+    applyUserUpdate((prev) => ({
+      ...prev,
+      trustedContacts: prev.trustedContacts.map((contact) =>
+        contact.id === contactId ? { ...contact, ...updates } : contact
+      ),
+    }))
+  }, [applyUserUpdate])
+
   const addSafePhrase = useCallback((phrase: SafePhrase) => {
     applyUserUpdate((prev) => ({
       ...prev,
@@ -196,6 +237,7 @@ export function useAppUser() {
     persistenceError,
     updateUser,
     addTrustedContact,
+    updateTrustedContact,
     addSafePhrase,
     updateEscalationPlan,
     updatePermissions,
