@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { Shield, CheckCircle, AlertCircle } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
 import { acceptInvite } from '../lib/invites'
+import EnablePushButton from '../components/EnablePushButton'
 
 type AcceptState =
   | { status: 'idle' }
@@ -121,10 +122,11 @@ export default function JoinPage() {
               <CheckCircle className="w-7 h-7 text-teal" />
             </div>
             <h1 className="text-2xl font-bold text-ivory mb-2">You're connected</h1>
-            <p className="text-ivory/60 mb-8">
+            <p className="text-ivory/60 mb-6">
               You're now part of {state.inviterName}'s safety circle and will be notified if they
               need help.
             </p>
+            <EnablePushButton className="mb-4" />
             <button
               onClick={() => navigate('/app/home')}
               className="w-full py-3 bg-gold text-dark font-semibold rounded-lg hover:bg-gold/90 transition-colors"

@@ -1,7 +1,10 @@
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
-import { Shield, Users, Mic, Clock, Settings, History, ChevronRight } from 'lucide-react'
+import { Shield, Users, Mic, Clock, Settings, History, ChevronRight, Bell } from 'lucide-react'
 import { AppUser } from '../../types'
+import EnablePushButton from '../../components/EnablePushButton'
+import DevPushTestButton from '../../components/DevPushTestButton'
 
 interface HomeScreenProps {
   user: AppUser
@@ -54,6 +57,11 @@ const menuItems = [
 
 export default function HomeScreen({ user }: HomeScreenProps) {
   const navigate = useNavigate()
+  // Passive read of the current permission — never triggers the browser
+  // prompt itself, so this is safe to compute on mount.
+  const [showEnableAlerts] = useState(
+    () => typeof Notification !== 'undefined' && Notification.permission !== 'granted'
+  )
 
   return (
     <motion.div
@@ -90,6 +98,32 @@ export default function HomeScreen({ user }: HomeScreenProps) {
           Start Guard Mode
         </button>
       </motion.div>
+
+      {/* Enable Push Alerts */}
+      {showEnableAlerts && (
+        <motion.div
+          initial={{ y: 10, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.15 }}
+          className="bg-dark-card border border-charcoal rounded-xl p-6 mb-8"
+        >
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-10 h-10 bg-teal/20 rounded-full flex items-center justify-center flex-shrink-0">
+              <Bell className="w-5 h-5 text-teal" />
+            </div>
+            <div>
+              <p className="font-medium text-ivory">Enable safety alerts</p>
+              <p className="text-xs text-ivory/60">
+                Get notified immediately if someone in your circle needs help
+              </p>
+            </div>
+          </div>
+          <EnablePushButton />
+        </motion.div>
+      )}
+
+      {/* Dev-only push loop verification — hidden in production builds */}
+      <DevPushTestButton />
 
       {/* Quick Stats */}
       <div className="grid grid-cols-3 gap-3 mb-8">

@@ -1,0 +1,24 @@
+{
+  "name": "Guardian",
+  "short_name": "Guardian",
+  "description": "Guardian - discreet personal safety sessions and alerts.",
+  "start_url": "/app/home",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0a0e27",
+  "theme_color": "#0a0e27",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
