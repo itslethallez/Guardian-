@@ -52,6 +52,8 @@ cp .env.example .env.local
 # Then edit .env.local and fill in your Supabase URL and anon key
 ```
 
+> **Security note:** an earlier commit in this repo's history accidentally checked in a real `.env` file with live Supabase credentials. That publishable/anon key must be treated as compromised — rotate it from **Settings → API → regenerate** in the Supabase dashboard before relying on this project.
+
 ### 4. Install and run
 
 ```bash

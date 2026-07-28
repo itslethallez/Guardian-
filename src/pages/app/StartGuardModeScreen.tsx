@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { ChevronRight, Clock, MapPin, Users, AlertCircle } from 'lucide-react'
 import { GuardModeSession } from '../../types'
+import DemoModeBanner from '../../components/DemoModeBanner'
 
 interface StartGuardModeScreenProps {
   onStart: (session: GuardModeSession) => void
@@ -68,6 +69,8 @@ export default function StartGuardModeScreen({
       animate={{ opacity: 1 }}
       className="min-h-screen flex flex-col p-6"
     >
+      <DemoModeBanner />
+
       {/* Header */}
       <div className="mb-8 mt-4">
         <h1 className="text-3xl font-bold text-ivory mb-2">Start Guard Mode</h1>
