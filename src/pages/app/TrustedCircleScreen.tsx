@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { ChevronRight, Plus, Mail, Phone, Users, CheckCircle, X } from 'lucide-react'
+import { QRCodeSVG } from 'qrcode.react'
+import { ChevronRight, Plus, Mail, Phone, Users, CheckCircle, X, Share2, Copy } from 'lucide-react'
 import { TrustedContact, AppUser } from '../../types'
+import { createInvite, CreateInviteResult } from '../../lib/invites'
 
 const countries = [
   { code: 'AU', name: 'Australia', dialCode: '+61', example: '412 345 678' },
@@ -30,10 +32,19 @@ export default function TrustedCircleScreen({
     phoneNumber: '',
     email: '',
   })
+  const [invite, setInvite] = useState<(CreateInviteResult & { contactName: string }) | null>(null)
+  const [inviteLoading, setInviteLoading] = useState(false)
+  const [inviteError, setInviteError] = useState<string | null>(null)
+  const [copyStatus, setCopyStatus] = useState<'idle' | 'copied' | 'failed'>('idle')
+
   const selectedCountry =
     countries.find((country) => country.code === formData.country) ?? countries[0]
 
-  const handleAdd = () => {
+  const inviteMessage = invite
+    ? `${user.name} added you to their Guardian safety circle. Open Guardian to accept: ${invite.url} (or enter code ${invite.code})`
+    : ''
+
+  const handleAdd = async () => {
     if (!formData.name.trim() || !formData.phoneNumber.trim()) return
     const trimmedPhone = formData.phoneNumber.trim()
     const normalizedPhone = trimmedPhone.startsWith('+')
@@ -53,6 +64,49 @@ export default function TrustedCircleScreen({
     onAdd(newContact)
     setFormData({ name: '', country: formData.country, phoneNumber: '', email: '' })
     setShowForm(false)
+
+    setInvite(null)
+    setInviteError(null)
+    setCopyStatus('idle')
+    setInviteLoading(true)
+    try {
+      const result = await createInvite({
+        contactId: newContact.id,
+        name: newContact.name,
+        phone: newContact.phoneNumber,
+      })
+      setInvite({ ...result, contactName: newContact.name })
+    } catch (err) {
+      setInviteError(
+        err instanceof Error ? err.message : 'Could not create an invite right now.'
+      )
+    } finally {
+      setInviteLoading(false)
+    }
+  }
+
+  const handleCopyInvite = async () => {
+    if (!invite) return
+    try {
+      await navigator.clipboard.writeText(inviteMessage)
+      setCopyStatus('copied')
+      setTimeout(() => setCopyStatus('idle'), 2000)
+    } catch {
+      setCopyStatus('failed')
+    }
+  }
+
+  const handleShareInvite = async () => {
+    if (!invite) return
+    if (navigator.share) {
+      try {
+        await navigator.share({ text: inviteMessage, url: invite.url })
+      } catch {
+        // User dismissed the native share sheet — nothing to do.
+      }
+      return
+    }
+    await handleCopyInvite()
   }
 
   const statusColors: Record<string, string> = {
@@ -109,6 +163,66 @@ export default function TrustedCircleScreen({
             ))}
           </div>
         </div>
+      )}
+
+      {/* Invite Panel */}
+      {inviteLoading && (
+        <div className="mb-6 text-sm text-ivory/60">Creating invite…</div>
+      )}
+      {inviteError && (
+        <div className="mb-6 text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-lg px-4 py-3">
+          {inviteError}
+        </div>
+      )}
+      {invite && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-dark-card border border-teal/30 rounded-lg p-6 mb-6"
+        >
+          <div className="flex items-center justify-between mb-2">
+            <h2 className="text-lg font-semibold text-ivory">Invite {invite.contactName}</h2>
+            <button
+              onClick={() => setInvite(null)}
+              className="text-ivory/60 hover:text-ivory transition-colors"
+            >
+              <X size={20} />
+            </button>
+          </div>
+          <p className="text-sm text-ivory/70 mb-4">
+            Share this code or link so {invite.contactName} can accept and start receiving your alerts.
+          </p>
+
+          <div className="flex flex-col items-center gap-4 mb-4">
+            <div className="bg-ivory p-3 rounded-lg">
+              <QRCodeSVG value={invite.url} size={160} />
+            </div>
+            <div className="text-center">
+              <p className="text-xs text-ivory/60 mb-1">Invite code</p>
+              <p className="text-3xl font-bold tracking-[0.3em] text-gold">{invite.code}</p>
+            </div>
+          </div>
+
+          <div className="flex gap-3">
+            <button
+              onClick={handleCopyInvite}
+              className="flex-1 px-4 py-3 border border-gold text-gold font-semibold rounded-lg hover:bg-gold/10 transition-colors flex items-center justify-center gap-2"
+            >
+              <Copy size={16} />
+              {copyStatus === 'copied'
+                ? 'Copied!'
+                : copyStatus === 'failed'
+                  ? "Couldn't copy"
+                  : 'Copy invite message'}
+            </button>
+            <button
+              onClick={handleShareInvite}
+              className="flex-1 px-4 py-3 bg-gold text-dark font-semibold rounded-lg hover:bg-gold/90 transition-colors flex items-center justify-center gap-2"
+            >
+              <Share2 size={16} /> Share
+            </button>
+          </div>
+        </motion.div>
       )}
 
       {/* Add Contact */}

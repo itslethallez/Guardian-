@@ -1,11 +1,13 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Mail, Lock, User, Shield } from 'lucide-react'
 import { useAuth } from '../../contexts/AuthContext'
 
 export default function SignUpPage() {
   const navigate = useNavigate()
+  const location = useLocation()
+  const locationState = location.state as { from?: string; code?: string } | null
   const { signUp } = useAuth()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -41,13 +43,18 @@ export default function SignUpPage() {
       navigate('/auth/sign-in', {
         state: {
           message: 'Account created. Please verify your email, then sign in.',
+          from: locationState?.from,
+          code: locationState?.code,
         },
       })
       return
     }
 
-    // After sign-up, go through onboarding for new users
-    navigate('/app/onboarding')
+    // After sign-up, go through onboarding for new users — unless they arrived
+    // here to accept a trusted-circle invite, in which case send them back to it.
+    navigate(locationState?.from ?? '/app/onboarding', {
+      state: locationState?.from ? { code: locationState.code } : undefined,
+    })
   }
 
   return (
