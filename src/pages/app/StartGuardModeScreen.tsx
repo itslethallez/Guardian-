@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { ChevronRight, Clock, MapPin, Users, AlertCircle } from 'lucide-react'
 import { GuardModeSession } from '../../types'
+import DemoModeBanner from '../../components/DemoModeBanner'
 
 interface StartGuardModeScreenProps {
   onStart: (session: GuardModeSession) => void
@@ -68,9 +69,11 @@ export default function StartGuardModeScreen({
       animate={{ opacity: 1 }}
       className="min-h-screen flex flex-col p-6"
     >
+      <DemoModeBanner />
+
       {/* Header */}
       <div className="mb-8 mt-4">
-        <h1 className="text-3xl font-bold text-ivory mb-2">Start Guard Mode</h1>
+        <h1 className="text-3xl font-bold text-ivory mb-2">Start Sotto Mode</h1>
         <p className="text-ivory/70">Configure your safety session</p>
       </div>
 
@@ -83,7 +86,7 @@ export default function StartGuardModeScreen({
           exit={{ opacity: 0, y: -10 }}
           className="flex-1"
         >
-          <h2 className="text-lg font-semibold text-ivory mb-4">How long do you need Guard Mode?</h2>
+          <h2 className="text-lg font-semibold text-ivory mb-4">How long do you need Sotto Mode?</h2>
           <div className="space-y-3">
             {durationOptions.map((option) => (
               <button
@@ -147,7 +150,7 @@ export default function StartGuardModeScreen({
               <div className="flex items-center gap-3">
                 <AlertCircle className="w-5 h-5 text-gold" />
                 <div>
-                  <p className="font-medium text-ivory">Enable SafePhrases</p>
+                  <p className="font-medium text-ivory">Enable Sotto Phrases</p>
                   <p className="text-xs text-ivory/60">Listen for your phrases</p>
                 </div>
               </div>
@@ -233,7 +236,7 @@ export default function StartGuardModeScreen({
             {config.enableSafePhrases && (
               <div>
                 <p className="text-sm text-ivory/60 flex items-center gap-2">
-                  <AlertCircle size={14} /> SafePhrases Listening
+                  <AlertCircle size={14} /> Sotto Phrases Listening
                 </p>
               </div>
             )}
@@ -247,7 +250,7 @@ export default function StartGuardModeScreen({
 
           <div className="bg-gold/5 border border-gold/20 rounded-lg p-4">
             <p className="text-sm text-ivory/80">
-              🎤 Make sure your microphone is enabled and you're in a safe place to activate Guard Mode.
+              🎤 Make sure your microphone is enabled and you're in a safe place to activate Sotto Mode.
             </p>
           </div>
         </motion.div>
@@ -282,7 +285,7 @@ export default function StartGuardModeScreen({
           }}
           className="flex-1 px-4 py-3 bg-gold text-dark font-semibold rounded-lg hover:bg-gold/90 transition-colors flex items-center justify-center gap-2"
         >
-          {step === 'review' ? 'Activate Guard Mode' : 'Continue'}
+          {step === 'review' ? 'Activate Sotto Mode' : 'Continue'}
           <ChevronRight size={18} />
         </button>
       </div>

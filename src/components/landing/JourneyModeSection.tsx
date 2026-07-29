@@ -12,7 +12,7 @@ export default function JourneyModeSection() {
         >
           <h2 className="text-3xl md:text-4xl font-bold text-ivory mb-4">Journey Mode for safer trips</h2>
           <p className="text-ivory/75 mb-6">
-            Share your route and expected arrival time. If you miss a check-in, Guard Mode prompts you and can alert your circle.
+            Share your route and expected arrival time. If you miss a check-in, Sotto prompts you and can alert your circle.
           </p>
           <div className="space-y-3 text-ivory/80">
             <p className="flex items-center gap-2"><Route className="w-4 h-4 text-teal" /> Route tracking with ETA</p>

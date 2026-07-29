@@ -1,11 +1,13 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Mail, Lock, User, Shield } from 'lucide-react'
 import { useAuth } from '../../contexts/AuthContext'
 
 export default function SignUpPage() {
   const navigate = useNavigate()
+  const location = useLocation()
+  const locationState = location.state as { from?: string; code?: string } | null
   const { signUp } = useAuth()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -41,13 +43,18 @@ export default function SignUpPage() {
       navigate('/auth/sign-in', {
         state: {
           message: 'Account created. Please verify your email, then sign in.',
+          from: locationState?.from,
+          code: locationState?.code,
         },
       })
       return
     }
 
-    // After sign-up, go through onboarding for new users
-    navigate('/app/onboarding')
+    // After sign-up, go through onboarding for new users — unless they arrived
+    // here to accept a trusted-circle invite, in which case send them back to it.
+    navigate(locationState?.from ?? '/app/onboarding', {
+      state: locationState?.from ? { code: locationState.code } : undefined,
+    })
   }
 
   return (
@@ -62,11 +69,11 @@ export default function SignUpPage() {
           <div className="w-10 h-10 rounded-lg bg-gold/10 border border-gold/30 flex items-center justify-center">
             <Shield className="w-5 h-5 text-gold" />
           </div>
-          <span className="text-xl font-bold text-ivory">Guard Mode</span>
+          <span className="text-xl font-bold text-ivory">Sotto</span>
         </div>
 
         <h1 className="text-2xl font-bold text-ivory mb-2">Create your account</h1>
-        <p className="text-ivory/60 mb-8">Set up Guard Mode in less than a minute</p>
+        <p className="text-ivory/60 mb-8">Set up Sotto in less than a minute</p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Name */}

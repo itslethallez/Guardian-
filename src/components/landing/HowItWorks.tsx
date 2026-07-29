@@ -3,12 +3,12 @@ import { MessageCircle, Mic, Siren } from 'lucide-react'
 
 const steps = [
   {
-    title: 'Set your SafePhrase',
+    title: 'Set your Sotto Phrase',
     description: 'Create a natural sentence only you know triggers help.',
     icon: MessageCircle,
   },
   {
-    title: 'Activate Guard Mode',
+    title: 'Activate Sotto Mode',
     description: 'Start listening quietly while location sharing runs in the background.',
     icon: Mic,
   },

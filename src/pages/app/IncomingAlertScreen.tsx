@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { AlertCircle, MapPin, Phone, MessageSquare, Navigation2, Clock, CheckCircle } from 'lucide-react'
+import DemoModeBanner from '../../components/DemoModeBanner'
 
 interface IncomingAlertScreenProps {
   onTrigger?: (alert: any) => void
@@ -31,6 +32,8 @@ export default function IncomingAlertScreen({
       animate={{ opacity: 1 }}
       className="min-h-screen flex flex-col p-6 pb-12 bg-gradient-to-b from-amber/5 to-dark"
     >
+      <DemoModeBanner />
+
       {/* Alert Header */}
       <motion.div
         animate={{ scale: [1, 1.1, 1] }}
@@ -46,7 +49,7 @@ export default function IncomingAlertScreen({
         <div className="inline-block px-4 py-1 bg-amber/20 text-amber rounded-full text-sm font-medium mb-4">
           Medium Alert
         </div>
-        <p className="text-lg text-ivory/80 italic">\"{ alert.customMessage}\"</p>
+        <p className="text-lg text-ivory/80 italic">{`"${alert.customMessage}"`}</p>
       </div>
 
       {/* Location Card */}
@@ -88,14 +91,14 @@ export default function IncomingAlertScreen({
           <div className="flex gap-3">
             <CheckCircle className="w-5 h-5 text-teal flex-shrink-0 mt-0.5" />
             <div>
-              <p className="text-sm text-ivory">Guard Mode activated</p>
+              <p className="text-sm text-ivory">Sotto Mode activated</p>
               <p className="text-xs text-ivory/60">15 minutes ago</p>
             </div>
           </div>
           <div className="flex gap-3">
             <AlertCircle className="w-5 h-5 text-amber flex-shrink-0 mt-0.5" />
             <div>
-              <p className="text-sm text-ivory">SafePhrase detected: \"I got a flat tyre\"</p>
+              <p className="text-sm text-ivory">Sotto Phrase detected: "I got a flat tyre"</p>
               <p className="text-xs text-ivory/60">2 minutes ago</p>
             </div>
           </div>

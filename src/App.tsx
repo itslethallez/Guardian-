@@ -6,6 +6,7 @@ import SimulationLab from './pages/SimulationLab'
 import AppPrototype from './pages/AppPrototype'
 import SignInPage from './pages/auth/SignInPage'
 import SignUpPage from './pages/auth/SignUpPage'
+import JoinPage from './pages/JoinPage'
 import './App.css'
 
 function App() {
@@ -18,6 +19,8 @@ function App() {
           <Route path="/simulation" element={<SimulationLab />} />
           <Route path="/auth/sign-in" element={<SignInPage />} />
           <Route path="/auth/sign-up" element={<SignUpPage />} />
+          <Route path="/join" element={<JoinPage />} />
+          <Route path="/join/:token" element={<JoinPage />} />
 
           {/* Protected app routes */}
           <Route

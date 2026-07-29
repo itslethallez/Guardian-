@@ -28,7 +28,7 @@ export default function AppPrototype() {
     updateEscalationPlan,
     updatePermissions,
   } = useAppUser()
-  const { state, startSession, endSession, triggerAlert } = useGuardModeState()
+  const { state, startSession, endSession, extendSession, triggerAlert } = useGuardModeState()
 
   if (loading) {
     return (
@@ -63,7 +63,16 @@ export default function AppPrototype() {
           <Route path="/permissions" element={<PermissionSetupScreen onUpdate={updatePermissions} />} />
           <Route path="/home" element={<HomeScreen user={user} />} />
           <Route path="/start-guard-mode" element={<StartGuardModeScreen onStart={startSession} />} />
-          <Route path="/guard-mode-active" element={<GuardModeActiveScreen session={state.currentSession} onEnd={endSession} />} />
+          <Route
+            path="/guard-mode-active"
+            element={
+              <GuardModeActiveScreen
+                session={state.currentSession}
+                onEnd={endSession}
+                onExtend={() => extendSession(30)}
+              />
+            }
+          />
           <Route path="/safe-phrases" element={<SafePhraseBuilderScreen user={user} onAdd={addSafePhrase} />} />
           <Route path="/trusted-circle" element={<TrustedCircleScreen user={user} onAdd={addTrustedContact} />} />
           <Route path="/escalation" element={<EscalationBuilderScreen onUpdate={updateEscalationPlan} />} />
@@ -76,7 +85,7 @@ export default function AppPrototype() {
             element={
               <SettingsDetailScreen
                 title="Notifications"
-                description="Manage how and when Guard Mode alerts and check-ins notify you."
+                description="Manage how and when Sotto alerts and check-ins notify you."
               />
             }
           />
@@ -94,7 +103,7 @@ export default function AppPrototype() {
             element={
               <SettingsDetailScreen
                 title="Privacy Controls"
-                description="Control retention, visibility, and data-sharing behavior for Guard Mode."
+                description="Control retention, visibility, and data-sharing behavior for Sotto Mode."
               />
             }
           />

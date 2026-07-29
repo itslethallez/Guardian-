@@ -5,7 +5,7 @@ const promises = [
   { icon: BadgeX, title: 'No data sold', copy: 'Your safety data is never sold to advertisers or brokers.' },
   { icon: LockKeyhole, title: 'End-to-end encrypted', copy: 'Sensitive alerts and phrases stay protected in transit.' },
   { icon: Trash2, title: 'Delete anytime', copy: 'Remove your history and contacts whenever you want.' },
-  { icon: DatabaseZap, title: 'No ads', copy: 'Guard Mode is focused on protection, not ad targeting.' },
+  { icon: DatabaseZap, title: 'No ads', copy: 'Sotto is focused on protection, not ad targeting.' },
 ]
 
 export default function PrivacySection() {

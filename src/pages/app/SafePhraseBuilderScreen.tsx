@@ -97,7 +97,7 @@ export default function SafePhraseBuilderScreen({
       timersRef.current.push(timer)
     }
 
-    pushStep(700, 'listening', 'Guard Mode is listening for the phrase...');
+    pushStep(700, 'listening', 'Sotto Mode is listening for the phrase...');
     pushStep(1500, 'matched', `Speech matched: "${phrase.phrase}"`, true)
     pushStep(2300, 'acknowledged', 'Trigger queued locally - no real alert sent')
     pushStep(3200, 'complete', 'Simulation complete')
@@ -117,7 +117,7 @@ export default function SafePhraseBuilderScreen({
     >
       {/* Header */}
       <div className="mb-8 mt-4">
-        <h1 className="text-3xl font-bold text-ivory mb-2">SafePhrases</h1>
+        <h1 className="text-3xl font-bold text-ivory mb-2">Sotto Phrases</h1>
         <p className="text-ivory/70">Create natural-sounding phrases that trigger your chosen response</p>
       </div>
 
@@ -130,7 +130,7 @@ export default function SafePhraseBuilderScreen({
       {/* Existing Phrases */}
       {user.safePhrases.length > 0 && (
         <div className="mb-8">
-          <h2 className="text-lg font-semibold text-ivory mb-4">Your SafePhrases</h2>
+          <h2 className="text-lg font-semibold text-ivory mb-4">Your Sotto Phrases</h2>
           <div className="space-y-3">
             {user.safePhrases.map((phrase) => (
               <motion.div
@@ -170,7 +170,7 @@ export default function SafePhraseBuilderScreen({
       {/* Add New Phrase Form */}
       {user.safePhrases.length < 5 && (
         <div className="bg-dark-card border border-charcoal rounded-lg p-6 mb-6">
-          <h2 className="text-lg font-semibold text-ivory mb-4">Add New SafePhrase</h2>
+          <h2 className="text-lg font-semibold text-ivory mb-4">Add New Sotto Phrase</h2>
           <div className="space-y-4">
             {/* Phrase Input */}
             <div>
@@ -227,7 +227,7 @@ export default function SafePhraseBuilderScreen({
               disabled={!formData.phrase.trim()}
               className="w-full px-4 py-3 bg-gold text-dark font-semibold rounded-lg hover:bg-gold/90 disabled:bg-gold/50 transition-colors flex items-center justify-center gap-2"
             >
-              <Plus size={18} /> Add SafePhrase
+              <Plus size={18} /> Add Sotto Phrase
             </button>
           </div>
         </div>
@@ -240,7 +240,7 @@ export default function SafePhraseBuilderScreen({
             <div>
               <h2 className="text-lg font-semibold text-ivory">Test Phrases (No Alert Sent)</h2>
               <p className="text-xs text-ivory/60 mt-1">
-                Simulate detection locally to verify your SafePhrases before you need them.
+                Simulate detection locally to verify your Sotto Phrases before you need them.
               </p>
             </div>
             <button
@@ -304,7 +304,7 @@ export default function SafePhraseBuilderScreen({
               ) : (
                 <div className="rounded-lg border border-charcoal bg-charcoal/40 p-4">
                   <p className="text-sm text-ivory/80">
-                    No phrase has been tested yet. Choose a SafePhrase above to run the simulation.
+                    No phrase has been tested yet. Choose a Sotto Phrase above to run the simulation.
                   </p>
                 </div>
               )}

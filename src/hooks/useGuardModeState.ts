@@ -36,6 +36,20 @@ export function useGuardModeState() {
     }))
   }, [])
 
+  const extendSession = useCallback((minutes: number) => {
+    setState((prev) => {
+      if (!prev.currentSession) return prev
+      const base = prev.currentSession.endTime ? new Date(prev.currentSession.endTime) : new Date()
+      const endTime = new Date(base.getTime() + minutes * 60000)
+      const session = { ...prev.currentSession, endTime }
+      return {
+        ...prev,
+        currentSession: session,
+        timeRemaining: calculateTimeRemaining(session),
+      }
+    })
+  }, [])
+
   const triggerAlert = useCallback((alert: AlertEvent) => {
     setState((prev) => ({
       ...prev,
@@ -47,6 +61,7 @@ export function useGuardModeState() {
     state,
     startSession,
     endSession,
+    extendSession,
     triggerAlert,
   }
 }

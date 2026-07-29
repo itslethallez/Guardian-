@@ -12,7 +12,7 @@ interface SettingsScreenProps {
 const settingsSections = [
   {
     icon: Shield,
-    label: 'SafePhrases',
+    label: 'Sotto Phrases',
     description: 'Manage your safety phrases',
     path: '/app/safe-phrases',
   },

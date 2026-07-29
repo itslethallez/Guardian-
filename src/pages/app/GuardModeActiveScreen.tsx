@@ -3,19 +3,38 @@ import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Shield, MapPin, Mic, Users, Battery, CheckCircle, Clock, AlertTriangle } from 'lucide-react'
 import { GuardModeSession } from '../../types'
+import DemoModeBanner from '../../components/DemoModeBanner'
 
 interface GuardModeActiveScreenProps {
   session: GuardModeSession | null
   onEnd: () => void
+  onExtend: () => void
 }
 
 export default function GuardModeActiveScreen({
   session,
   onEnd,
+  onExtend,
 }: GuardModeActiveScreenProps) {
   const navigate = useNavigate()
   const [timeRemaining, setTimeRemaining] = useState<number>(0)
   const [showCheckIn, setShowCheckIn] = useState(false)
+
+  const handleImSafe = () => {
+    setShowCheckIn(false)
+    onEnd()
+    navigate('/app/home')
+  }
+
+  const handleExtend = () => {
+    onExtend()
+    setShowCheckIn(false)
+  }
+
+  const handleQuietAssistance = () => {
+    setShowCheckIn(false)
+    navigate('/app/incoming-alert')
+  }
 
   useEffect(() => {
     if (!session?.endTime) return
@@ -55,6 +74,8 @@ export default function GuardModeActiveScreen({
       animate={{ opacity: 1 }}
       className="min-h-screen flex flex-col p-6 pb-12"
     >
+      <DemoModeBanner />
+
       {/* Active Indicator */}
       <motion.div
         animate={{ scale: [1, 1.05, 1] }}
@@ -67,7 +88,7 @@ export default function GuardModeActiveScreen({
       {/* Status */}
       <div className="text-center mb-8">
         <p className="text-sm text-teal font-semibold mb-1 flex items-center justify-center gap-2">
-          <CheckCircle size={14} /> Guard Mode Active
+          <CheckCircle size={14} /> Sotto Mode Active
         </p>
         <h1 className="text-4xl font-bold text-ivory mb-2">{formatTime(timeRemaining)}</h1>
         <p className="text-sm text-ivory/60">Time remaining</p>
@@ -141,13 +162,22 @@ export default function GuardModeActiveScreen({
             </div>
             <p className="text-ivory/70 mb-6">Are you safe? Let us know how you're doing.</p>
             <div className="space-y-3">
-              <button className="w-full px-4 py-3 bg-teal text-dark font-semibold rounded-lg hover:bg-teal-light transition-colors">
+              <button
+                onClick={handleImSafe}
+                className="w-full px-4 py-3 bg-teal text-dark font-semibold rounded-lg hover:bg-teal-light transition-colors"
+              >
                 I'm Safe
               </button>
-              <button className="w-full px-4 py-3 border border-gold text-gold font-semibold rounded-lg hover:bg-gold/10 transition-colors">
+              <button
+                onClick={handleExtend}
+                className="w-full px-4 py-3 border border-gold text-gold font-semibold rounded-lg hover:bg-gold/10 transition-colors"
+              >
                 Extend Session
               </button>
-              <button className="w-full px-4 py-3 border border-amber text-amber font-semibold rounded-lg hover:bg-amber/10 transition-colors">
+              <button
+                onClick={handleQuietAssistance}
+                className="w-full px-4 py-3 border border-amber text-amber font-semibold rounded-lg hover:bg-amber/10 transition-colors"
+              >
                 Quiet Assistance
               </button>
             </div>
@@ -157,13 +187,22 @@ export default function GuardModeActiveScreen({
 
       {/* Actions */}
       <div className="space-y-3 mt-auto">
-        <button className="w-full px-4 py-3 bg-teal text-dark font-semibold rounded-lg hover:bg-teal-light transition-colors">
+        <button
+          onClick={handleImSafe}
+          className="w-full px-4 py-3 bg-teal text-dark font-semibold rounded-lg hover:bg-teal-light transition-colors"
+        >
           I'm Safe
         </button>
-        <button className="w-full px-4 py-3 border border-gold text-gold font-semibold rounded-lg hover:bg-gold/10 transition-colors">
+        <button
+          onClick={handleExtend}
+          className="w-full px-4 py-3 border border-gold text-gold font-semibold rounded-lg hover:bg-gold/10 transition-colors"
+        >
           Extend Time
         </button>
-        <button className="w-full px-4 py-3 border border-amber text-amber font-semibold rounded-lg hover:bg-amber/10 transition-colors">
+        <button
+          onClick={handleQuietAssistance}
+          className="w-full px-4 py-3 border border-amber text-amber font-semibold rounded-lg hover:bg-amber/10 transition-colors"
+        >
           Quiet Assistance
         </button>
         <button

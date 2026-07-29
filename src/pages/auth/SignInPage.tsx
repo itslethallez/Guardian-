@@ -12,10 +12,8 @@ export default function SignInPage() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
-  const infoMessage =
-    typeof (location.state as { message?: unknown } | null)?.message === 'string'
-      ? ((location.state as { message?: string }).message ?? null)
-      : null
+  const locationState = location.state as { message?: string; from?: string; code?: string } | null
+  const infoMessage = typeof locationState?.message === 'string' ? locationState.message : null
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -31,7 +29,9 @@ export default function SignInPage() {
       return
     }
 
-    navigate('/app/home')
+    navigate(locationState?.from ?? '/app/home', {
+      state: locationState?.from ? { code: locationState.code } : undefined,
+    })
   }
 
   return (
@@ -46,7 +46,7 @@ export default function SignInPage() {
           <div className="w-10 h-10 rounded-lg bg-gold/10 border border-gold/30 flex items-center justify-center">
             <Shield className="w-5 h-5 text-gold" />
           </div>
-          <span className="text-xl font-bold text-ivory">Guard Mode</span>
+          <span className="text-xl font-bold text-ivory">Sotto</span>
         </div>
 
         <h1 className="text-2xl font-bold text-ivory mb-2">Welcome back</h1>

@@ -6,11 +6,11 @@ import { ChevronRight } from 'lucide-react'
 const slides = [
   {
     heading: 'Protection without drawing attention',
-    description: 'Guard Mode activates only when you choose it.',
+    description: 'Sotto Mode activates only when you choose it.',
     icon: '🛡️',
   },
   {
-    heading: 'Create private SafePhrases',
+    heading: 'Create private Sotto Phrases',
     description: 'Natural sentences that trigger your chosen response.',
     icon: '🎤',
   },
@@ -25,7 +25,7 @@ const slides = [
     icon: '🔒',
   },
   {
-    heading: 'Guard Mode runs only when you activate it',
+    heading: 'Sotto Mode runs only when you activate it',
     description: 'No background monitoring. No exceptions.',
     icon: '✨',
   },
@@ -85,7 +85,7 @@ export default function OnboardingScreen() {
             onClick={handleNext}
             className="flex-1 px-4 py-3 bg-gold text-dark font-semibold rounded-lg hover:bg-gold/90 transition-colors flex items-center justify-center gap-2"
           >
-            {currentSlide === slides.length - 1 ? 'Set Up Guard Mode' : 'Continue'}
+            {currentSlide === slides.length - 1 ? 'Set Up Sotto Mode' : 'Continue'}
             <ChevronRight size={18} />
           </button>
         </div>

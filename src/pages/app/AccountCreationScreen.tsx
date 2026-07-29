@@ -48,7 +48,7 @@ export default function AccountCreationScreen() {
       {/* Header */}
       <div className="mb-8 mt-4">
         <h1 className="text-3xl font-bold text-ivory mb-2">Create Your Account</h1>
-        <p className="text-ivory/70">Set up Guard Mode in less than a minute</p>
+        <p className="text-ivory/70">Set up Sotto in less than a minute</p>
       </div>
 
       {/* Form */}
@@ -178,7 +178,7 @@ export default function AccountCreationScreen() {
             required
           />
           <span className="text-sm text-ivory/70">
-            I understand that Guard Mode is a personal safety tool and does not guarantee emergency response. I've read and accept the terms.
+            I understand that Sotto is a personal safety tool and does not guarantee emergency response. I've read and accept the terms.
           </span>
         </label>
 

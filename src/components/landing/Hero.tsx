@@ -74,7 +74,7 @@ export default function Hero() {
 
               {/* Supporting copy */}
               <motion.p variants={item} className="text-lg text-ivory/80 max-w-lg leading-relaxed">
-                Guard Mode gives you a discreet way to ask for help, share your location, and alert people you trust without making it obvious to anyone around you.
+                Sotto gives you a discreet way to ask for help, share your location, and alert people you trust without making it obvious to anyone around you.
               </motion.p>
 
               {/* CTAs */}
@@ -83,7 +83,7 @@ export default function Hero() {
                   to="/auth/sign-up"
                   className="inline-flex items-center justify-center gap-2 px-8 py-3 bg-gold text-dark font-semibold rounded-lg hover:bg-gold/90 transition-colors"
                 >
-                  Start Guard Mode
+                  Start Sotto Mode
                   <ArrowRight size={18} />
                 </Link>
                 <a
@@ -150,7 +150,7 @@ export default function Hero() {
                   {/* Status text */}
                   <div className="text-center">
                     <p className="text-sm text-teal font-semibold mb-2">Ready when you are</p>
-                    <p className="text-xs text-ivory/60">Listening for SafePhrases</p>
+                    <p className="text-xs text-ivory/60">Listening for Sotto Phrases</p>
                   </div>
 
                   {/* Quick status */}

@@ -12,7 +12,7 @@ export default function Navigation() {
 
   const navItems = [
     { label: 'How It Works', href: '#how-it-works' },
-    { label: 'SafePhrase', href: '#safephrase' },
+    { label: 'Sotto Phrase', href: '#safephrase' },
     { label: 'Trusted Circle', href: '#trusted-circle' },
     { label: 'Journey Mode', href: '#journey-mode' },
     { label: 'Privacy', href: '#privacy' },
@@ -56,7 +56,7 @@ export default function Navigation() {
               to="/auth/sign-up"
               className="px-6 py-2 bg-gold text-dark font-medium rounded-lg hover:bg-gold/90 transition-colors"
             >
-              Get Guard Mode
+              Get Sotto
             </Link>
           </div>
 
@@ -107,7 +107,7 @@ export default function Navigation() {
                   className="block px-4 py-2 bg-gold text-dark font-medium rounded-lg hover:bg-gold/90 transition-colors text-center"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  Get Guard Mode
+                  Get Sotto
                 </Link>
               </div>
             </div>
