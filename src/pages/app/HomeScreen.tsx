@@ -13,14 +13,14 @@ interface HomeScreenProps {
 const menuItems = [
   {
     icon: Shield,
-    label: 'Start Guard Mode',
+    label: 'Start Sotto Mode',
     description: 'Activate your safety session',
     path: '/app/start-guard-mode',
     color: 'text-gold',
   },
   {
     icon: Mic,
-    label: 'SafePhrases',
+    label: 'Sotto Phrases',
     description: 'Manage your phrases',
     path: '/app/safe-phrases',
     color: 'text-teal',
@@ -84,7 +84,7 @@ export default function HomeScreen({ user }: HomeScreenProps) {
       >
         <div className="flex items-center justify-between mb-4">
           <div>
-            <p className="text-sm text-ivory/60">Guard Mode Status</p>
+            <p className="text-sm text-ivory/60">Sotto Mode Status</p>
             <p className="text-2xl font-bold text-ivory">Ready to Activate</p>
           </div>
           <div className="w-12 h-12 bg-teal/20 rounded-full flex items-center justify-center">
@@ -95,7 +95,7 @@ export default function HomeScreen({ user }: HomeScreenProps) {
           onClick={() => navigate('/app/start-guard-mode')}
           className="w-full px-4 py-3 bg-gold text-dark font-semibold rounded-lg hover:bg-gold/90 transition-colors"
         >
-          Start Guard Mode
+          Start Sotto Mode
         </button>
       </motion.div>
 
@@ -134,7 +134,7 @@ export default function HomeScreen({ user }: HomeScreenProps) {
           className="bg-dark-card border border-charcoal rounded-lg p-4 text-center"
         >
           <p className="text-2xl font-bold text-gold">{user.safePhrases.length}</p>
-          <p className="text-xs text-ivory/60">SafePhrases</p>
+          <p className="text-xs text-ivory/60">Sotto Phrases</p>
         </motion.div>
         <motion.div
           initial={{ y: 10, opacity: 0 }}

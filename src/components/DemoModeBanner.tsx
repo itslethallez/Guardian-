@@ -8,7 +8,7 @@ export default function DemoModeBanner() {
     >
       <AlertTriangle className="w-4 h-4 flex-shrink-0" />
       <span>
-        DEMO MODE — Guardian is not yet monitoring and will NOT contact anyone in an emergency.
+        DEMO MODE — Sotto is not yet monitoring and will NOT contact anyone in an emergency.
       </span>
     </div>
   )

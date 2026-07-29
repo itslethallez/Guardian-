@@ -24,7 +24,7 @@ const permissions: PermissionDefinition[] = [
     id: 'microphone',
     name: 'Microphone',
     icon: Mic,
-    description: 'Listen for your SafePhrases',
+    description: 'Listen for your Sotto Phrases',
     required: true,
   },
   {
@@ -45,7 +45,7 @@ const permissions: PermissionDefinition[] = [
     id: 'backgroundActivity',
     name: 'Background Activity',
     icon: Zap,
-    description: 'Keep Guard Mode running in the background',
+    description: 'Keep Sotto Mode running in the background',
     required: false,
   },
   {
@@ -150,7 +150,7 @@ export default function PermissionSetupScreen({
         'backgroundActivity',
         false,
         'unsupported',
-        'Background activity support is limited by this browser. Guard Mode may pause when the app is not active.'
+        'Background activity support is limited by this browser. Sotto Mode may pause when the app is not active.'
       )
       return
     }
@@ -243,7 +243,7 @@ export default function PermissionSetupScreen({
       {/* Header */}
       <div className="mb-8 mt-4">
         <h1 className="text-3xl font-bold text-ivory mb-2">Permissions</h1>
-        <p className="text-ivory/70">Choose which permissions Guard Mode needs</p>
+        <p className="text-ivory/70">Choose which permissions Sotto Mode needs</p>
       </div>
 
       {/* Permissions List */}

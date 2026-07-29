@@ -59,13 +59,13 @@ const steps: SimulationStep[] = [
   },
   {
     key: 'safephrase',
-    title: 'SafePhrase test mode',
+    title: 'Sotto Phrase test mode',
     description: 'Simulate detection and local acknowledgement.',
     icon: Mic,
   },
   {
     key: 'guard',
-    title: 'Guard Mode active',
+    title: 'Sotto Mode active',
     description: 'Inspect the live session state and time remaining.',
     icon: Shield,
   },
@@ -87,8 +87,8 @@ const featureChecklist = [
   { key: 'landing', label: 'Landing experience', icon: Sparkles },
   { key: 'signup', label: 'Account setup', icon: Smartphone },
   { key: 'permissions', label: 'Phone permissions', icon: Lock },
-  { key: 'safephrase', label: 'SafePhrase test', icon: Mic },
-  { key: 'guard', label: 'Guard Mode session', icon: Shield },
+  { key: 'safephrase', label: 'Sotto Phrase test', icon: Mic },
+  { key: 'guard', label: 'Sotto Mode session', icon: Shield },
   { key: 'alert', label: 'Incoming alert flow', icon: AlertTriangle },
   { key: 'settings', label: 'Settings and privacy', icon: Cog },
 ] as const
@@ -183,7 +183,7 @@ export default function SimulationLab() {
                   <Shield className="w-5 h-5 text-gold" />
                 </div>
                 <div>
-                  <p className="text-xs uppercase tracking-[0.25em] text-gold">Guard Mode</p>
+                  <p className="text-xs uppercase tracking-[0.25em] text-gold">Sotto</p>
                   <h2 className="text-2xl font-bold text-ivory">Safety that does not draw attention.</h2>
                 </div>
               </div>
@@ -191,7 +191,7 @@ export default function SimulationLab() {
                 Test the hero, CTA order, and new visual hierarchy in a realistic preview.
               </p>
               <div className="flex gap-3">
-                <div className="px-4 py-2 rounded-lg bg-gold text-dark text-sm font-semibold">Start Guard Mode</div>
+                <div className="px-4 py-2 rounded-lg bg-gold text-dark text-sm font-semibold">Start Sotto Mode</div>
                 <div className="px-4 py-2 rounded-lg border border-charcoal text-ivory/80 text-sm">View simulation</div>
               </div>
             </div>
@@ -230,7 +230,7 @@ export default function SimulationLab() {
         return (
           <div className="space-y-3">
             {[
-              ['Microphone', true, 'Listening for SafePhrases'],
+              ['Microphone', true, 'Listening for Sotto Phrases'],
               ['Location', true, 'Sharing with Trusted Circle'],
               ['Notifications', true, 'Receiving check-ins'],
               ['Motion', false, 'Optional sensor'],
@@ -321,7 +321,7 @@ export default function SimulationLab() {
       case 'settings':
         return (
           <div className="grid gap-3">
-            {['SafePhrases', 'Trusted Circle', 'Escalation Plan', 'Privacy Controls'].map((item) => (
+            {['Sotto Phrases', 'Trusted Circle', 'Escalation Plan', 'Privacy Controls'].map((item) => (
               <div key={item} className="rounded-xl border border-charcoal bg-dark-card p-4 flex items-center justify-between">
                 <div>
                   <p className="text-ivory font-medium">{item}</p>
@@ -345,7 +345,7 @@ export default function SimulationLab() {
             <p className="text-xs uppercase tracking-[0.3em] text-gold mb-2">Visual simulation</p>
             <h1 className="text-3xl md:text-5xl font-bold text-ivory">App feature simulation lab</h1>
             <p className="text-ivory/70 max-w-2xl mt-3">
-              Run a visual walkthrough of the landing page, onboarding, permissions, SafePhrase tests, Guard Mode, alerts, and settings.
+              Run a visual walkthrough of the landing page, onboarding, permissions, Sotto Phrase tests, Sotto Mode, alerts, and settings.
             </p>
           </div>
           <div className="flex flex-wrap gap-3">

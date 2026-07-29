@@ -69,11 +69,11 @@ export default function SignUpPage() {
           <div className="w-10 h-10 rounded-lg bg-gold/10 border border-gold/30 flex items-center justify-center">
             <Shield className="w-5 h-5 text-gold" />
           </div>
-          <span className="text-xl font-bold text-ivory">Guard Mode</span>
+          <span className="text-xl font-bold text-ivory">Sotto</span>
         </div>
 
         <h1 className="text-2xl font-bold text-ivory mb-2">Create your account</h1>
-        <p className="text-ivory/60 mb-8">Set up Guard Mode in less than a minute</p>
+        <p className="text-ivory/60 mb-8">Set up Sotto in less than a minute</p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Name */}

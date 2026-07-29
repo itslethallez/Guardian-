@@ -41,7 +41,7 @@ export default function TrustedCircleScreen({
     countries.find((country) => country.code === formData.country) ?? countries[0]
 
   const inviteMessage = invite
-    ? `${user.name} added you to their Guardian safety circle. Open Guardian to accept: ${invite.url} (or enter code ${invite.code})`
+    ? `${user.name} added you to their Sotto safety circle. Open Sotto to accept: ${invite.url} (or enter code ${invite.code})`
     : ''
 
   const handleAdd = async () => {
@@ -329,7 +329,7 @@ export default function TrustedCircleScreen({
       {/* Info Card */}
       <div className="bg-gold/5 border border-gold/20 rounded-lg p-4">
         <p className="text-sm text-ivory/80">
-          💡 Invited contacts can join Guard Mode to receive your alerts. SMS fallback is available for contacts without the app.
+          💡 Invited contacts can join Sotto to receive your alerts. SMS fallback is available for contacts without the app.
         </p>
       </div>
     </motion.div>

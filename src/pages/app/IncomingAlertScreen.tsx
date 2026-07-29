@@ -91,14 +91,14 @@ export default function IncomingAlertScreen({
           <div className="flex gap-3">
             <CheckCircle className="w-5 h-5 text-teal flex-shrink-0 mt-0.5" />
             <div>
-              <p className="text-sm text-ivory">Guard Mode activated</p>
+              <p className="text-sm text-ivory">Sotto Mode activated</p>
               <p className="text-xs text-ivory/60">15 minutes ago</p>
             </div>
           </div>
           <div className="flex gap-3">
             <AlertCircle className="w-5 h-5 text-amber flex-shrink-0 mt-0.5" />
             <div>
-              <p className="text-sm text-ivory">SafePhrase detected: "I got a flat tyre"</p>
+              <p className="text-sm text-ivory">Sotto Phrase detected: "I got a flat tyre"</p>
               <p className="text-xs text-ivory/60">2 minutes ago</p>
             </div>
           </div>

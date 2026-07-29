@@ -85,7 +85,7 @@ export default function AppPrototype() {
             element={
               <SettingsDetailScreen
                 title="Notifications"
-                description="Manage how and when Guard Mode alerts and check-ins notify you."
+                description="Manage how and when Sotto alerts and check-ins notify you."
               />
             }
           />
@@ -103,7 +103,7 @@ export default function AppPrototype() {
             element={
               <SettingsDetailScreen
                 title="Privacy Controls"
-                description="Control retention, visibility, and data-sharing behavior for Guard Mode."
+                description="Control retention, visibility, and data-sharing behavior for Sotto Mode."
               />
             }
           />

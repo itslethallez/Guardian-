@@ -39,13 +39,13 @@ export default function EnablePushButton({
       </button>
       {status === 'denied' && (
         <p className="text-xs text-amber mt-2">
-          Notifications are blocked for Guardian. Enable them in your browser or device settings to
+          Notifications are blocked for Sotto. Enable them in your browser or device settings to
           receive alerts.
         </p>
       )}
       {status === 'unsupported' && (
         <p className="text-xs text-ivory/60 mt-2">
-          This device doesn't support push notifications yet — on iOS, install Guardian to your home
+          This device doesn't support push notifications yet — on iOS, install Sotto to your home
           screen first (Share → Add to Home Screen), then open it from there and try again.
         </p>
       )}

@@ -75,7 +75,7 @@ export default function JoinPage() {
             You've been invited to a safety circle
           </h1>
           <p className="text-ivory/60 mb-8">
-            Open Guardian and sign in (or create an account) to accept and start receiving alerts.
+            Open Sotto and sign in (or create an account) to accept and start receiving alerts.
           </p>
           <div className="space-y-3 mb-8">
             <button
@@ -131,7 +131,7 @@ export default function JoinPage() {
               onClick={() => navigate('/app/home')}
               className="w-full py-3 bg-gold text-dark font-semibold rounded-lg hover:bg-gold/90 transition-colors"
             >
-              Continue to Guardian
+              Continue to Sotto
             </button>
           </>
         )}

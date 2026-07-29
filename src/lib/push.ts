@@ -33,7 +33,7 @@ export async function enablePush(): Promise<EnablePushResult> {
 
   const vapidPublicKey = import.meta.env.VITE_VAPID_PUBLIC_KEY
   if (!vapidPublicKey) {
-    console.error('[Guard Mode] Missing VITE_VAPID_PUBLIC_KEY — cannot subscribe to push.')
+    console.error('[Sotto] Missing VITE_VAPID_PUBLIC_KEY — cannot subscribe to push.')
     return 'unsupported'
   }
 
@@ -58,7 +58,7 @@ export async function enablePush(): Promise<EnablePushResult> {
         applicationServerKey: urlBase64ToUint8Array(vapidPublicKey) as BufferSource,
       }))
   } catch (err) {
-    console.error('[Guard Mode] Push subscription failed:', err)
+    console.error('[Sotto] Push subscription failed:', err)
     return 'unsupported'
   }
 
@@ -68,7 +68,7 @@ export async function enablePush(): Promise<EnablePushResult> {
   } = await supabase.auth.getUser()
 
   if (userError || !user) {
-    console.error('[Guard Mode] Cannot save push subscription: no authenticated user.')
+    console.error('[Sotto] Cannot save push subscription: no authenticated user.')
     return 'unsupported'
   }
 
@@ -85,7 +85,7 @@ export async function enablePush(): Promise<EnablePushResult> {
   )
 
   if (error) {
-    console.error('[Guard Mode] Failed to save push subscription:', error.message)
+    console.error('[Sotto] Failed to save push subscription:', error.message)
     return 'unsupported'
   }
 

@@ -67,7 +67,7 @@ Deno.serve(async (req: Request) => {
     }
 
     const payload = JSON.stringify({
-      title: 'Guardian test',
+      title: 'Sotto test',
       body: 'Push is working',
       url: appUrl,
     })

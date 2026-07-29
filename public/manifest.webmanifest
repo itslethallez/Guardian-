@@ -1,7 +1,7 @@
 {
-  "name": "Guardian",
-  "short_name": "Guardian",
-  "description": "Guardian - discreet personal safety sessions and alerts.",
+  "name": "Sotto",
+  "short_name": "Sotto",
+  "description": "Sotto - Say it without saying it.",
   "start_url": "/app/home",
   "scope": "/",
   "display": "standalone",

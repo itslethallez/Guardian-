@@ -1,4 +1,4 @@
-// Guardian service worker: Web Push display + notification click routing.
+// Sotto service worker: Web Push display + notification click routing.
 // Deliberately dependency-free — no bundler, no imports.
 
 self.addEventListener('install', () => {
@@ -10,7 +10,7 @@ self.addEventListener('activate', (event) => {
 })
 
 self.addEventListener('push', (event) => {
-  let payload = { title: 'Guardian', body: 'You have a new alert.', url: '/' }
+  let payload = { title: 'Sotto', body: 'You have a new alert.', url: '/' }
 
   if (event.data) {
     try {
@@ -20,7 +20,7 @@ self.addEventListener('push', (event) => {
     }
   }
 
-  const title = payload.title || 'Guardian'
+  const title = payload.title || 'Sotto'
   const options = {
     body: payload.body || '',
     data: { url: payload.url || '/' },

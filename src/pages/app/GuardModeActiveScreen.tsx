@@ -88,7 +88,7 @@ export default function GuardModeActiveScreen({
       {/* Status */}
       <div className="text-center mb-8">
         <p className="text-sm text-teal font-semibold mb-1 flex items-center justify-center gap-2">
-          <CheckCircle size={14} /> Guard Mode Active
+          <CheckCircle size={14} /> Sotto Mode Active
         </p>
         <h1 className="text-4xl font-bold text-ivory mb-2">{formatTime(timeRemaining)}</h1>
         <p className="text-sm text-ivory/60">Time remaining</p>
