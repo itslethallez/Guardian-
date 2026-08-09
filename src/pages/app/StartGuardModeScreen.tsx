@@ -2,10 +2,11 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { ChevronRight, Clock, MapPin, Users, AlertCircle } from 'lucide-react'
-import { GuardModeSession } from '../../types'
+import { AppUser, GuardModeSession } from '../../types'
 import DemoModeBanner from '../../components/DemoModeBanner'
 
 interface StartGuardModeScreenProps {
+  user: AppUser
   onStart: (session: GuardModeSession) => void
 }
 
@@ -17,6 +18,7 @@ const durationOptions = [
 ] as const
 
 export default function StartGuardModeScreen({
+  user,
   onStart,
 }: StartGuardModeScreenProps) {
   const navigate = useNavigate()
@@ -51,8 +53,10 @@ export default function StartGuardModeScreen({
       duration: config.duration,
       endTime: config.duration === 'manual' ? undefined : endTime,
       locationSharing: config.locationSharing,
-      trustedContacts: [],
-      activeSafePhrase: [],
+      trustedContacts: user.trustedContacts.map((contact) => contact.id),
+      activeSafePhrase: config.enableSafePhrases
+        ? user.safePhrases.filter((phrase) => phrase.isActive).map((phrase) => phrase.id)
+        : [],
       checkInInterval: config.checkInInterval,
       note: config.note,
       status: 'active',
@@ -127,7 +131,11 @@ export default function StartGuardModeScreen({
                 <MapPin className="w-5 h-5 text-gold" />
                 <div>
                   <p className="font-medium text-ivory">Location Sharing</p>
-                  <p className="text-xs text-ivory/60">Share with Trusted Circle</p>
+                  <p className="text-xs text-ivory/60">
+                    {user.trustedContacts.length > 0
+                      ? `Share with your ${user.trustedContacts.length}-person Trusted Circle`
+                      : 'Add a Trusted Circle contact to share with'}
+                  </p>
                 </div>
               </div>
               <input
@@ -151,7 +159,11 @@ export default function StartGuardModeScreen({
                 <AlertCircle className="w-5 h-5 text-gold" />
                 <div>
                   <p className="font-medium text-ivory">Enable Sotto Phrases</p>
-                  <p className="text-xs text-ivory/60">Listen for your phrases</p>
+                  <p className="text-xs text-ivory/60">
+                    {user.safePhrases.filter((phrase) => phrase.isActive).length > 0
+                      ? `Listen for your ${user.safePhrases.filter((phrase) => phrase.isActive).length} active phrase(s)`
+                      : 'Add a Sotto Phrase to enable listening'}
+                  </p>
                 </div>
               </div>
               <input

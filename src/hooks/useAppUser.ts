@@ -190,6 +190,20 @@ export function useAppUser() {
     }))
   }, [applyUserUpdate])
 
+  const addSession = useCallback((session: GuardModeSession) => {
+    applyUserUpdate((prev) => ({
+      ...prev,
+      sessions: [session, ...prev.sessions],
+    }))
+  }, [applyUserUpdate])
+
+  const deleteSession = useCallback((sessionId: string) => {
+    applyUserUpdate((prev) => ({
+      ...prev,
+      sessions: prev.sessions.filter((session) => session.id !== sessionId),
+    }))
+  }, [applyUserUpdate])
+
   return {
     user,
     loading,
@@ -199,5 +213,7 @@ export function useAppUser() {
     addSafePhrase,
     updateEscalationPlan,
     updatePermissions,
+    addSession,
+    deleteSession,
   }
 }

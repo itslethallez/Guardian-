@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Shield, MapPin, Mic, Users, Battery, CheckCircle, Clock, AlertTriangle } from 'lucide-react'
+import { Shield, MapPin, Users, CheckCircle, AlertTriangle, BellOff } from 'lucide-react'
 import { GuardModeSession } from '../../types'
 import DemoModeBanner from '../../components/DemoModeBanner'
 
@@ -19,6 +19,7 @@ export default function GuardModeActiveScreen({
   const navigate = useNavigate()
   const [timeRemaining, setTimeRemaining] = useState<number>(0)
   const [showCheckIn, setShowCheckIn] = useState(false)
+  const [quietAssistanceSent, setQuietAssistanceSent] = useState(false)
 
   const handleImSafe = () => {
     setShowCheckIn(false)
@@ -33,7 +34,7 @@ export default function GuardModeActiveScreen({
 
   const handleQuietAssistance = () => {
     setShowCheckIn(false)
-    navigate('/app/incoming-alert')
+    setQuietAssistanceSent(true)
   }
 
   useEffect(() => {
@@ -61,6 +62,7 @@ export default function GuardModeActiveScreen({
   }
 
   const formatTime = (seconds: number) => {
+    if (!session.endTime) return 'No time limit'
     const hours = Math.floor(seconds / 3600)
     const minutes = Math.floor((seconds % 3600) / 60)
     const secs = seconds % 60
@@ -91,7 +93,9 @@ export default function GuardModeActiveScreen({
           <CheckCircle size={14} /> Sotto Mode Active
         </p>
         <h1 className="text-4xl font-bold text-ivory mb-2">{formatTime(timeRemaining)}</h1>
-        <p className="text-sm text-ivory/60">Time remaining</p>
+        <p className="text-sm text-ivory/60">
+          {session.endTime ? 'Time remaining' : 'Ends when you tap "End Session"'}
+        </p>
       </div>
 
       {/* Status Grid */}
@@ -99,48 +103,33 @@ export default function GuardModeActiveScreen({
         {/* Location */}
         <div className="bg-dark-card border border-charcoal rounded-lg p-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <MapPin className="w-5 h-5 text-teal" />
+            <MapPin className={`w-5 h-5 ${session.locationSharing ? 'text-teal' : 'text-ivory/40'}`} />
             <div>
               <p className="font-medium text-ivory">Location</p>
-              <p className="text-xs text-ivory/60">Connected</p>
+              <p className="text-xs text-ivory/60">
+                {session.locationSharing ? 'Sharing with your circle' : 'Not shared this session'}
+              </p>
             </div>
           </div>
-          <div className="w-3 h-3 rounded-full bg-teal animate-pulse" />
-        </div>
-
-        {/* Microphone */}
-        <div className="bg-dark-card border border-charcoal rounded-lg p-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Mic className="w-5 h-5 text-teal" />
-            <div>
-              <p className="font-medium text-ivory">Microphone</p>
-              <p className="text-xs text-ivory/60">Listening</p>
-            </div>
-          </div>
-          <div className="w-3 h-3 rounded-full bg-teal animate-pulse" />
+          {session.locationSharing && <div className="w-3 h-3 rounded-full bg-teal animate-pulse" />}
         </div>
 
         {/* Trusted Circle */}
         <div className="bg-dark-card border border-charcoal rounded-lg p-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Users className="w-5 h-5 text-teal" />
+            <Users className={`w-5 h-5 ${session.trustedContacts.length > 0 ? 'text-teal' : 'text-ivory/40'}`} />
             <div>
               <p className="font-medium text-ivory">Trusted Circle</p>
-              <p className="text-xs text-ivory/60">2 Connected</p>
+              <p className="text-xs text-ivory/60">
+                {session.trustedContacts.length > 0
+                  ? `${session.trustedContacts.length} in this session`
+                  : 'No trusted contacts added'}
+              </p>
             </div>
           </div>
-          <div className="w-3 h-3 rounded-full bg-teal animate-pulse" />
-        </div>
-
-        {/* Battery */}
-        <div className="bg-dark-card border border-charcoal rounded-lg p-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Battery className="w-5 h-5 text-safety-green" />
-            <div>
-              <p className="font-medium text-ivory">Battery</p>
-              <p className="text-xs text-ivory/60">87%</p>
-            </div>
-          </div>
+          {session.trustedContacts.length > 0 && (
+            <div className="w-3 h-3 rounded-full bg-teal animate-pulse" />
+          )}
         </div>
       </div>
 
@@ -185,6 +174,23 @@ export default function GuardModeActiveScreen({
         </motion.div>
       )}
 
+      {/* Quiet Assistance confirmation */}
+      {quietAssistanceSent && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-amber/10 border border-amber/30 rounded-lg p-4 mb-4 flex items-start gap-3"
+        >
+          <BellOff className="w-5 h-5 text-amber flex-shrink-0 mt-0.5" />
+          <div>
+            <p className="text-sm text-amber font-semibold">Quiet Assistance queued</p>
+            <p className="text-xs text-amber/80 mt-1">
+              This is a demo — no real alert was sent to your Trusted Circle. See the banner above.
+            </p>
+          </div>
+        </motion.div>
+      )}
+
       {/* Actions */}
       <div className="space-y-3 mt-auto">
         <button
@@ -201,9 +207,10 @@ export default function GuardModeActiveScreen({
         </button>
         <button
           onClick={handleQuietAssistance}
-          className="w-full px-4 py-3 border border-amber text-amber font-semibold rounded-lg hover:bg-amber/10 transition-colors"
+          disabled={quietAssistanceSent}
+          className="w-full px-4 py-3 border border-amber text-amber font-semibold rounded-lg hover:bg-amber/10 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
-          Quiet Assistance
+          {quietAssistanceSent ? 'Quiet Assistance Sent' : 'Quiet Assistance'}
         </button>
         <button
           onClick={() => {

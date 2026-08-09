@@ -1,20 +1,55 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { ChevronRight, MapPin, Clock, AlertCircle } from 'lucide-react'
+import { ChevronRight, MapPin, Clock, AlertCircle, Users } from 'lucide-react'
+import { AppUser, GuardModeSession } from '../../types'
 
-export default function JourneyModeScreen() {
+interface JourneyModeScreenProps {
+  user: AppUser
+  onStart: (session: GuardModeSession) => void
+}
+
+export default function JourneyModeScreen({ user, onStart }: JourneyModeScreenProps) {
   const navigate = useNavigate()
   const [step, setStep] = useState<'destination' | 'arrival' | 'review'>('destination')
   const [config, setConfig] = useState({
     destination: '',
     expectedArrival: '',
     gracePeriod: 5,
-    shareRoute: true,
   })
 
   const handleStart = () => {
-    navigate('/app/home')
+    const now = new Date()
+    const expectedArrival = new Date(now)
+    const [hours, minutes] = config.expectedArrival.split(':').map(Number)
+    if (!Number.isNaN(hours) && !Number.isNaN(minutes)) {
+      expectedArrival.setHours(hours, minutes, 0, 0)
+    }
+
+    const session: GuardModeSession = {
+      id: `session-${Date.now()}`,
+      startTime: now,
+      duration: 'custom',
+      endTime: undefined,
+      locationSharing: true,
+      trustedContacts: user.trustedContacts.map((contact) => contact.id),
+      activeSafePhrase: user.safePhrases.filter((phrase) => phrase.isActive).map((phrase) => phrase.id),
+      checkInInterval: config.gracePeriod,
+      note: `Journey to ${config.destination}`,
+      status: 'active',
+      alertsTriggered: [],
+      journeyMode: {
+        id: `journey-${Date.now()}`,
+        destination: config.destination,
+        expectedArrival,
+        routeSharing: true,
+        checkInGracePeriod: config.gracePeriod,
+        status: 'active',
+      },
+    }
+
+    onStart(session)
+    navigate('/app/guard-mode-active')
   }
 
   return (
@@ -49,18 +84,25 @@ export default function JourneyModeScreen() {
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-ivory mb-2">Share Route With</label>
-            <select className="w-full px-4 py-3 bg-charcoal border border-charcoal/50 rounded-lg text-ivory focus:outline-none focus:border-gold mb-4">
-              <option>Sarah & James</option>
-              <option>Sarah Only</option>
-              <option>Full Trusted Circle</option>
-            </select>
+          <div className="bg-dark-card border border-charcoal rounded-lg p-4 mb-4 flex items-center gap-3">
+            <Users className={`w-5 h-5 ${user.trustedContacts.length > 0 ? 'text-teal' : 'text-ivory/40'}`} />
+            <div>
+              <p className="text-sm font-medium text-ivory">
+                {user.trustedContacts.length > 0
+                  ? `Shared with your ${user.trustedContacts.length}-person Trusted Circle`
+                  : 'No Trusted Circle contacts yet'}
+              </p>
+              <p className="text-xs text-ivory/60">
+                {user.trustedContacts.length > 0
+                  ? 'Your route and status go to everyone in your circle'
+                  : 'Add a contact from Trusted Circle before starting a journey'}
+              </p>
+            </div>
           </div>
 
           <div className="bg-gold/5 border border-gold/20 rounded-lg p-4">
             <p className="text-sm text-ivory/80">
-              📄 Your route and status will be shared with selected contacts until you mark the journey complete.
+              📄 Your route and status will be shared with your Trusted Circle until you mark the journey complete.
             </p>
           </div>
         </motion.div>

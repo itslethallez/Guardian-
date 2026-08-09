@@ -16,7 +16,6 @@ export default function Navigation() {
     { label: 'Trusted Circle', href: '#trusted-circle' },
     { label: 'Journey Mode', href: '#journey-mode' },
     { label: 'Privacy', href: '#privacy' },
-    { label: 'Simulation', href: '/simulation' },
   ]
 
   return (
