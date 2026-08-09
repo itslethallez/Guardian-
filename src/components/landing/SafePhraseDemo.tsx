@@ -11,9 +11,9 @@ export default function SafePhraseDemo() {
           viewport={{ once: true }}
           className="bg-dark-card border border-charcoal rounded-2xl p-8 md:p-10"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-ivory mb-4">Sotto Phrase detection</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-ivory mb-4">Safe Phrase detection</h2>
           <p className="text-ivory/75 mb-8">
-            Say your phrase naturally in conversation. Sotto Mode quietly detects it and activates your emergency flow.
+            Say your phrase naturally in conversation. Hush Mode quietly detects it and activates your emergency flow.
           </p>
 
           <div className="grid md:grid-cols-2 gap-6 items-center">
@@ -35,7 +35,7 @@ export default function SafePhraseDemo() {
               </div>
               <div className="flex items-center gap-3 text-ivory/80">
                 <MessageSquare className="w-4 h-4 text-gold" />
-                <span>Sotto Phrase detected. Alerting your trusted circle.</span>
+                <span>Safe Phrase detected. Alerting your trusted circle.</span>
               </div>
             </motion.div>
           </div>

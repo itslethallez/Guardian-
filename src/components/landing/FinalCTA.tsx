@@ -16,7 +16,7 @@ export default function FinalCTA() {
           <div className="relative z-10">
             <h2 className="text-3xl md:text-4xl font-bold text-ivory mb-4">Your safety, one phrase away</h2>
             <p className="text-ivory/75 mb-8">
-              Set up Sotto in minutes and protect yourself discreetly wherever you go.
+              Set up Hush in minutes and protect yourself discreetly wherever you go.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
               <Link

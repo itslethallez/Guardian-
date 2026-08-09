@@ -1,7 +1,7 @@
 {
-  "name": "Sotto",
-  "short_name": "Sotto",
-  "description": "Sotto - Say it without saying it.",
+  "name": "Hush",
+  "short_name": "Hush",
+  "description": "Hush - Safety in silence.",
   "start_url": "/app/home",
   "scope": "/",
   "display": "standalone",

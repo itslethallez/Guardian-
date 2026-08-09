@@ -45,7 +45,7 @@ export const supabaseConfigError = !hasRequiredEnv
     : null
 
 if (supabaseConfigError) {
-  console.error(`[Sotto] ${supabaseConfigError}`)
+  console.error(`[Hush] ${supabaseConfigError}`)
 }
 
 const fallbackUrl = 'https://placeholder.supabase.co'

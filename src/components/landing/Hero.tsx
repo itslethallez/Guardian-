@@ -68,13 +68,13 @@ export default function Hero() {
               {/* Main headline */}
               <motion.div variants={item}>
                 <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-ivory leading-tight max-w-xl">
-                  Safety that does not draw attention.
+                  Safety in silence.
                 </h1>
               </motion.div>
 
               {/* Supporting copy */}
               <motion.p variants={item} className="text-lg text-ivory/80 max-w-lg leading-relaxed">
-                Sotto gives you a discreet way to ask for help, share your location, and alert people you trust without making it obvious to anyone around you.
+                Hush gives you a discreet way to ask for help, share your location, and alert people you trust without making it obvious to anyone around you.
               </motion.p>
 
               {/* CTAs */}
@@ -83,7 +83,7 @@ export default function Hero() {
                   to="/auth/sign-up"
                   className="inline-flex items-center justify-center gap-2 px-8 py-3 bg-gold text-dark font-semibold rounded-lg hover:bg-gold/90 transition-colors"
                 >
-                  Start Sotto Mode
+                  Start Hush Mode
                   <ArrowRight size={18} />
                 </Link>
                 <a
@@ -150,7 +150,7 @@ export default function Hero() {
                   {/* Status text */}
                   <div className="text-center">
                     <p className="text-sm text-teal font-semibold mb-2">Ready when you are</p>
-                    <p className="text-xs text-ivory/60">Listening for Sotto Phrases</p>
+                    <p className="text-xs text-ivory/60">Listening for Safe Phrases</p>
                   </div>
 
                   {/* Quick status */}

@@ -10,9 +10,9 @@ export default function GuardModeSection() {
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-ivory mb-4">Sotto Mode, always in the background</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-ivory mb-4">Hush Mode, always in the background</h2>
           <p className="text-ivory/75 mb-6">
-            Stay discreet while Sotto Mode listens for your Sotto Phrase, tracks your route, and keeps trusted contacts aware.
+            Stay discreet while Hush Mode listens for your Safe Phrase, tracks your route, and keeps trusted contacts aware.
           </p>
           <div className="space-y-3">
             <p className="flex items-center gap-2 text-ivory/80"><Mic className="w-4 h-4 text-teal" /> Passive phrase listening</p>
@@ -27,7 +27,7 @@ export default function GuardModeSection() {
           viewport={{ once: true }}
           className="bg-dark-card border border-charcoal rounded-2xl p-6"
         >
-          <div className="text-xs text-ivory/50 mb-3">Sotto Mode status</div>
+          <div className="text-xs text-ivory/50 mb-3">Hush Mode status</div>
           <div className="space-y-3">
             <div className="flex justify-between text-sm">
               <span className="text-ivory/70">Microphone</span>

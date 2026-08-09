@@ -73,7 +73,7 @@ export function useAppUser() {
 
       if (error) {
         setPersistenceError(error.message)
-        console.error('[Sotto] Failed to save profile state:', error.message)
+        console.error('[Hush] Failed to save profile state:', error.message)
         return
       }
 
@@ -123,7 +123,7 @@ export function useAppUser() {
 
       if (error) {
         setPersistenceError(error.message)
-        console.error('[Sotto] Failed to load profile state:', error.message)
+        console.error('[Hush] Failed to load profile state:', error.message)
         setLoading(false)
         return
       }
