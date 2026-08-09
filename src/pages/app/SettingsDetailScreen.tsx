@@ -29,8 +29,7 @@ export default function SettingsDetailScreen({ title, description }: SettingsDet
 
       <div className="bg-dark-card border border-charcoal rounded-lg p-5">
         <p className="text-sm text-ivory/80">
-          This section is part of the in-app flow and is now reachable. Feature controls for this
-          screen can be expanded here next.
+          {title} controls aren't available yet in this version of Sotto.
         </p>
       </div>
     </motion.div>

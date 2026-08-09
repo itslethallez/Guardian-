@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { ArrowRight, PlayCircle } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 export default function FinalCTA() {
@@ -18,19 +18,12 @@ export default function FinalCTA() {
             <p className="text-ivory/75 mb-8">
               Set up Sotto in minutes and protect yourself discreetly wherever you go.
             </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+            <div className="flex items-center justify-center">
               <Link
                 to="/auth/sign-up"
                 className="inline-flex items-center gap-2 px-7 py-3 bg-gold text-dark font-semibold rounded-lg hover:bg-gold/90 transition-colors"
               >
                 Start now <ArrowRight className="w-4 h-4" />
-              </Link>
-              <Link
-                to="/simulation"
-                className="inline-flex items-center gap-2 px-7 py-3 border border-charcoal text-ivory/80 font-semibold rounded-lg hover:bg-charcoal/40 transition-colors"
-              >
-                <PlayCircle className="w-4 h-4" />
-                Open simulation
               </Link>
             </div>
           </div>

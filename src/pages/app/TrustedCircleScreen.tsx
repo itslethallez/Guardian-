@@ -329,7 +329,7 @@ export default function TrustedCircleScreen({
       {/* Info Card */}
       <div className="bg-gold/5 border border-gold/20 rounded-lg p-4">
         <p className="text-sm text-ivory/80">
-          💡 Invited contacts can join Sotto to receive your alerts. SMS fallback is available for contacts without the app.
+          💡 Invited contacts join Sotto to receive your alerts. They'll need to accept your invite before their status shows as connected.
         </p>
       </div>
     </motion.div>
